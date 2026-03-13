@@ -24,7 +24,7 @@ const NotificationIcon = () => {
           <h4 className="border-b border-ring/30 pb-2">Notifications</h4>
           <DropdownMenuGroup>
             <DropdownMenuItem
-              className={"flex items-center gap-2 cursor-pointer"}
+              className={"flex items-start gap-2 cursor-pointer"}
             >
               <div className="border border-ring/30 rounded-sm p-1">
                 <Car size={18} />
