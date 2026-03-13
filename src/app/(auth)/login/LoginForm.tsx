@@ -23,7 +23,7 @@ const LoginForm = () => {
   const onSubmit = async (data: LoginFormSchema) => {
     try {
       await loginUser(data);
-      return router.push("/");
+      return router.push("/admin");
     } catch (error) {
       console.error(error);
     }

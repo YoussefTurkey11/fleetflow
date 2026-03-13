@@ -26,7 +26,7 @@ const RegisterForm = () => {
   const onSubmit = async (data: RegisterFormSchema) => {
     try {
       await registerUser(data);
-      return router.push("/");
+      return router.push("/admin");
     } catch (error) {
       console.error(error);
     }
