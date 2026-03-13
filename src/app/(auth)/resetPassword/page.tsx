@@ -1,6 +1,8 @@
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import ResetPasswordForm from "./ResetPasswordForm";
+import { Suspense } from "react";
+import { Spinner } from "@/components/ui/spinner";
 
 const ResetPassword = () => {
   return (
@@ -14,7 +16,19 @@ const ResetPassword = () => {
           <span>Back</span>
         </Link>
       </div>
-      <ResetPasswordForm />
+
+      <Suspense
+        fallback={
+          <div className="text-center p-10">
+            <p className="text-muted-foreground flex items-center gap-1">
+              <Spinner />
+              <span>Loading...</span>
+            </p>
+          </div>
+        }
+      >
+        <ResetPasswordForm />
+      </Suspense>
     </>
   );
 };
