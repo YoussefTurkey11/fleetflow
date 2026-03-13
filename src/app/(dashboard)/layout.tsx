@@ -3,7 +3,7 @@ import Sidebar from "@/components/layouts/sidebar/Sidebar";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <main className="flex">
+    <main className="flex relative">
       <Sidebar />
       <section className="w-full">
         <Header />

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import SubMenu from "./SubMenu";
 
 const ItemSidebar = ({ collapsed }: { collapsed: boolean }) => {
   const pathname = usePathname();
@@ -60,29 +61,10 @@ const ItemSidebar = ({ collapsed }: { collapsed: boolean }) => {
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="flex flex-col gap-3 my-3 mx-5 border-l border-ring/30 overflow-hidden"
+                    className={`flex flex-col gap-3 my-3 mx-5 ${collapsed ? "" : "border-l border-primary/5"} overflow-hidden`}
                   >
                     {item.nested.map((sub) => (
-                      <motion.li
-                        key={sub.id}
-                        initial={{ x: -10, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <Link
-                          href={`/${sub.link}`}
-                          className={`flex items-center gap-3 px-5 py-3 transition-colors
-                          ${
-                            isActive(sub.link)
-                              ? "bg-primary/5 rounded-md"
-                              : "hover:bg-primary/5 hover:rounded-md"
-                          }`}
-                        >
-                          {sub.icon}
-                          <span className="capitalize">{sub.name}</span>
-                        </Link>
-                      </motion.li>
+                      <SubMenu key={sub.id} sub={sub} isActive={isActive} />
                     ))}
                   </motion.ul>
                 )}
