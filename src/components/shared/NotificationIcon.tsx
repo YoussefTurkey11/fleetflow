@@ -14,7 +14,7 @@ const NotificationIcon = () => {
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
-          <Button variant="ghost" className="rounded-full" size="icon-lg">
+          <Button variant="outline" className="rounded-full" size="icon-lg">
             <Bell size={22} />
           </Button>
         }

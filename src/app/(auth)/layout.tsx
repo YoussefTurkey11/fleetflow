@@ -1,8 +1,12 @@
+import { ThemeToggle } from "@/components/shared/ThemeToggle";
 import Image from "next/image";
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <main className="flex items-center justify-center min-h-screen">
+      <div className="fixed top-5 right-5">
+        <ThemeToggle />
+      </div>
       <section className="flex flex-col items-center gap-5">
         <div className="flex flex-col items-center gap-2">
           <Image

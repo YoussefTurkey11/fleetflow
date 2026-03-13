@@ -2,6 +2,7 @@
 
 import NotificationIcon from "@/components/shared/NotificationIcon";
 import Search from "@/components/shared/Search";
+import { ThemeToggle } from "@/components/shared/ThemeToggle";
 import UserAvatar from "@/components/shared/UserAvatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -48,13 +49,10 @@ const Header = () => {
       </div>
 
       {/* Right */}
-      <div className="flex items-center gap-5">
-        {/* Notification */}
+      <div className="flex items-center gap-3">
+        <ThemeToggle />
         <NotificationIcon />
-
         <div className="w-px h-8 bg-ring/40 hidden sm:block"></div>
-
-        {/* User */}
         <UserAvatar />
       </div>
     </header>
