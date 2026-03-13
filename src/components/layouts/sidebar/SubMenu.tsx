@@ -21,8 +21,8 @@ const SubMenu = ({
         className={`flex items-center gap-3 px-5 py-3 transition-colors
         ${
           isActive(sub.link)
-            ? "bg-primary/5 rounded-md"
-            : "hover:bg-primary/5 hover:rounded-r-md"
+            ? "bg-secondary rounded-md"
+            : "hover:bg-secondary hover:rounded-r-md"
         }`}
       >
         {sub.icon}

@@ -28,7 +28,7 @@ const ItemSidebar = ({ collapsed }: { collapsed: boolean }) => {
               <div
                 className={`flex items-center ${
                   collapsed ? "justify-center" : "justify-between px-5"
-                } py-3 cursor-pointer hover:bg-primary/5 hover:rounded-md transition-colors`}
+                } py-3 cursor-pointer hover:bg-secondary hover:rounded-md transition-colors`}
                 onClick={() => toggleMenu(item.id)}
               >
                 <p
@@ -61,7 +61,7 @@ const ItemSidebar = ({ collapsed }: { collapsed: boolean }) => {
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className={`flex flex-col gap-3 my-3 mx-5 ${collapsed ? "" : "border-l border-primary/5"} overflow-hidden`}
+                    className={`flex flex-col gap-3 my-3 mx-5 ${collapsed ? "" : "border-l border-secondary"} overflow-hidden`}
                   >
                     {item.nested.map((sub) => (
                       <SubMenu key={sub.id} sub={sub} isActive={isActive} />
@@ -78,8 +78,8 @@ const ItemSidebar = ({ collapsed }: { collapsed: boolean }) => {
               } py-3 transition-colors
               ${
                 isActive(item.link)
-                  ? "bg-primary/5 rounded-md"
-                  : "hover:bg-primary/5 hover:rounded-md"
+                  ? "bg-secondary rounded-md"
+                  : "hover:bg-secondary hover:rounded-md"
               }`}
             >
               {item.icon}

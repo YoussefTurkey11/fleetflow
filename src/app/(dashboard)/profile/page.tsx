@@ -45,7 +45,7 @@ const Profile = () => {
   };
 
   return (
-    <section className="flex justify-center items-center flex-col gap-5 min-h-[calc(100vh-81px)]">
+    <section className="flex justify-center items-center flex-col gap-5 min-h-[calc(100vh-81px)] ">
       <div>
         <Image
           src={"/images/driver.png"}
