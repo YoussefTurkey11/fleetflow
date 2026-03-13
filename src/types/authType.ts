@@ -25,3 +25,11 @@ export type User = {
   updatedAt: string;
   publishedAt: string;
 };
+
+export type UpdateUserPayload = {
+  id: number;
+  body: {
+    username?: string;
+    email?: string;
+  };
+};

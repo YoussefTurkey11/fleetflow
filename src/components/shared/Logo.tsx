@@ -1,8 +1,10 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const Logo = ({ collapsed }: { collapsed: boolean }) => {
   return (
-    <div
+    <Link
+      href={"/admin"}
       className={`flex items-center gap-2 ${collapsed ? "" : "px-5"} pb-5 border-b border-ring/30`}
     >
       <Image
@@ -18,7 +20,7 @@ const Logo = ({ collapsed }: { collapsed: boolean }) => {
           <p className="text-sm text-muted-foreground">Logistics SaaS</p>
         </div>
       )}
-    </div>
+    </Link>
   );
 };
 

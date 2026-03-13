@@ -1,5 +1,8 @@
 "use client";
 
+import NotificationIcon from "@/components/shared/NotificationIcon";
+import Search from "@/components/shared/Search";
+import UserAvatar from "@/components/shared/UserAvatar";
 import { Button } from "@/components/ui/button";
 import {
   InputGroup,
@@ -41,38 +44,18 @@ const Header = () => {
         </Button>
 
         {/* Search */}
-        <InputGroup className="hidden md:flex w-87.5">
-          <InputGroupInput placeholder="Search..." />
-          <InputGroupAddon align="inline-start">
-            <SearchIcon className="text-muted-foreground" />
-          </InputGroupAddon>
-        </InputGroup>
+        <Search />
       </div>
 
       {/* Right */}
       <div className="flex items-center gap-5">
         {/* Notification */}
-        <Button variant="ghost" className="rounded-full" size="icon-lg">
-          <Bell size={22} />
-        </Button>
+        <NotificationIcon />
 
         <div className="w-px h-8 bg-ring/40 hidden sm:block"></div>
 
         {/* User */}
-        <div className="flex items-center gap-3 cursor-pointer">
-          <div className="hidden sm:flex flex-col items-end gap-1">
-            <p className="text-sm font-semibold">Youssef Turkey</p>
-            <span className="text-xs text-muted-foreground">Admin</span>
-          </div>
-
-          <Image
-            src="/images/driver.png"
-            width={40}
-            height={40}
-            alt="user"
-            className="rounded-full"
-          />
-        </div>
+        <UserAvatar />
       </div>
     </header>
   );

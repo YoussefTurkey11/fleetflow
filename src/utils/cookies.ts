@@ -1,7 +1,12 @@
 import Cookies from "js-cookie";
 
 export const setAuthCookie = (token: string) => {
-  Cookies.set("auth_token", token, { expires: 7, path: "/" });
+  Cookies.set("auth_token", token, {
+    expires: 7,
+    path: "/",
+    secure: true,
+    sameSite: "lax",
+  });
 };
 
 export const removeAuthCookie = () => {
