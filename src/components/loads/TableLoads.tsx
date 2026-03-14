@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import {
   ArrowDown,
   ArrowUp,
@@ -9,8 +8,6 @@ import {
   Pencil,
   Search,
 } from "lucide-react";
-
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,25 +18,15 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import {
-  ApiResponseLoad,
-  ApiResponseLoads,
-  TableLoadsProps,
-} from "@/types/loadType";
+import { Load, TableLoadsProps } from "@/types/loadType";
+import { useTableSort } from "@/hooks/useTableSort";
+import { useTableSearch } from "@/hooks/useTableSearch";
+import { useTableFilter } from "@/hooks/useTableFilter";
 
 const TABS = [
-  {
-    label: "All",
-    value: "all",
-  },
-  {
-    label: "Available",
-    value: "available",
-  },
-  {
-    label: "Unavailable",
-    value: "unavailable",
-  },
+  { label: "All", value: "all" },
+  { label: "Available", value: "available" },
+  { label: "Unavailable", value: "unavailable" },
 ];
 
 const TABLE_HEAD = [
@@ -54,81 +41,43 @@ const TABLE_HEAD = [
 ];
 
 type SortKey = "id" | "Route" | "Available" | "HasNote";
-type SortDirection = "asc" | "desc" | null;
 
 export function TableLoads({ loads }: TableLoadsProps) {
-  const [sortKey, setSortKey] = React.useState<SortKey | null>(null);
-  const [sortDirection, setSortDirection] = React.useState<SortDirection>(null);
   const rows = loads?.data ?? [];
 
-  const handleSort = (key: SortKey) => {
-    if (sortKey === key) {
-      if (sortDirection === "asc") {
-        setSortDirection("desc");
-      } else if (sortDirection === "desc") {
-        setSortKey(null);
-        setSortDirection(null);
-      } else {
-        setSortDirection("asc");
-      }
-    } else {
-      setSortKey(key);
-      setSortDirection("asc");
-    }
-  };
+  // Search Hook
+  const { search, setSearch, filteredRowsSearch } = useTableSearch(rows, [
+    "Route",
+    "id",
+  ]);
 
-  const sortedRows = React.useMemo(() => {
-    if (!sortKey || !sortDirection) return rows;
+  // Filter Hook
+  const { filter, setFilter, filteredRowsFilter } = useTableFilter(
+    filteredRowsSearch,
+    (row, filter) => {
+      if (filter === "available") return row.Available;
+      if (filter === "unavailable") return !row.Available;
+      return true;
+    },
+  );
 
-    return [...rows].sort((a, b) => {
-      let aValue: string | boolean | number;
-      let bValue: string | boolean | number;
+  // Sort Hook
+  const { sortedRows, handleSort, sortKey, sortDirection } =
+    useTableSort<Load>(filteredRowsFilter);
 
-      if (sortKey === "id") {
-        aValue = a.id;
-        bValue = b.id;
-      } else if (sortKey === "Route") {
-        aValue = a.Route;
-        bValue = b.Route;
-      } else if (sortKey === "Available") {
-        aValue = a.Available;
-        bValue = b.Available;
-      } else {
-        aValue = a.HasNote;
-        bValue = b.HasNote;
-      }
-
-      if (typeof aValue === "boolean" && typeof bValue === "boolean") {
-        return sortDirection === "asc"
-          ? Number(aValue) - Number(bValue)
-          : Number(bValue) - Number(aValue);
-      }
-
-      if (typeof aValue === "string" && typeof bValue === "string") {
-        return sortDirection === "asc"
-          ? aValue.localeCompare(bValue)
-          : bValue.localeCompare(aValue);
-      }
-
-      if (typeof aValue === "number" && typeof bValue === "number") {
-        return sortDirection === "asc" ? aValue - bValue : bValue - aValue;
-      }
-
-      return 0;
-    });
-  }, [rows, sortKey, sortDirection]);
-
+  // Sort icon helper
   const getSortIcon = (columnKey: SortKey) => {
-    if (sortKey !== columnKey) {
-      return <ArrowUpDown className="h-4 w-4" />;
-    }
-    if (sortDirection === "asc") {
-      return <ArrowUp className="h-4 w-4" />;
-    }
-    return <ArrowDown className="h-4 w-4" />;
+    if (sortKey !== columnKey) return <ArrowUpDown className="h-4 w-4" />;
+    return sortDirection === "asc" ? (
+      <ArrowUp className="h-4 w-4" />
+    ) : (
+      <ArrowDown className="h-4 w-4" />
+    );
   };
+
   return (
     <div className="w-full">
+      {/* Header */}
       <div className="mb-8 flex items-center justify-between gap-8">
         <div>
           <h6 className="text-base font-semibold">Loads list</h6>
@@ -146,27 +95,36 @@ export function TableLoads({ loads }: TableLoadsProps) {
           </Button>
         </div>
       </div>
+
+      {/* Tabs + Search */}
       <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-        <Tabs defaultValue="all" className="w-full md:w-max">
+        <Tabs
+          value={filter}
+          onValueChange={setFilter}
+          className="w-full md:w-max"
+        >
           <TabsList>
             {TABS.map(({ label, value }) => (
-              <TabsTrigger
-                key={value}
-                value={value}
-                className={"cursor-pointer"}
-              >
+              <TabsTrigger key={value} value={value} className="cursor-pointer">
                 {label}
               </TabsTrigger>
             ))}
           </TabsList>
         </Tabs>
+
         <div className="relative w-full md:w-72">
           <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
-          <Input placeholder="Search" className="pl-9" />
+          <Input
+            placeholder="Search"
+            className="pl-9"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
         </div>
       </div>
 
-      <div className="border-border mt-4 w-full overflow-hidden rounded-lg border">
+      {/* Table */}
+      <div className="border-border mt-4 w-full overflow-x-scroll rounded-lg border">
         <table className="w-full">
           <thead className="border-border bg-muted border-b text-sm font-medium">
             <tr>
@@ -179,7 +137,6 @@ export function TableLoads({ loads }: TableLoadsProps) {
                   null,
                 ];
                 const key = sortKeys[index];
-
                 return (
                   <th
                     key={head}
@@ -195,85 +152,68 @@ export function TableLoads({ loads }: TableLoadsProps) {
               })}
             </tr>
           </thead>
+
           <tbody className="text-sm">
             {sortedRows.map(
               (
-                {
-                  id,
-                  Route,
-                  Distance,
-                  PricePerMile,
-                  Total,
-                  Available,
-                  HasNote,
-                },
+                { id, Route, Distance, PricePerMile, Total, Available },
                 index,
-              ) => {
-                return (
-                  <tr
-                    key={index}
-                    className="border-border border-b last:border-0"
-                  >
-                    <td className="p-3">
-                      <div className="flex flex-col">
-                        <span className="text-sm font-medium">{id}</span>
-                      </div>
-                    </td>
-                    <td className="p-3">
-                      <div className="flex flex-col">
-                        <span className="text-sm font-medium">{Route}</span>
-                      </div>
-                    </td>
-                    <td className="p-3">
-                      <div className="flex flex-col">
-                        <span className="text-sm font-medium">{Distance}</span>
-                      </div>
-                    </td>
-                    <td className="p-3">
-                      <div className="flex flex-col">
-                        <span className="text-sm font-medium">
-                          {PricePerMile}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="p-3">
-                      <div className="flex flex-col">
-                        <span className="text-sm font-medium">{Total}</span>
-                      </div>
-                    </td>
-                    <td className="p-3">
-                      <Badge variant={Available ? "default" : "destructive"}>
-                        {Available ? "Available" : "Unavailable"}
-                      </Badge>
-                    </td>
-                    <td className="p-3">
-                      <Badge variant={Available ? "default" : "secondary"}>
-                        {Available ? "Has Note" : "No Note"}
-                      </Badge>
-                    </td>
-                    <td className="p-3">
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger
-                            render={
-                              <Button variant="ghost" size="icon">
-                                <Pencil className="h-4 w-4" />
-                              </Button>
-                            }
-                          />
-                          <TooltipContent>
-                            <p>Edit Load</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </td>
-                  </tr>
-                );
-              },
+              ) => (
+                <tr
+                  key={index}
+                  className="border-border border-b last:border-0"
+                >
+                  <td className="p-3">
+                    <span className="text-sm font-medium">{id}</span>
+                  </td>
+                  <td className="p-3">
+                    <span className="text-sm font-medium truncate">
+                      {Route}
+                    </span>
+                  </td>
+                  <td className="p-3">
+                    <span className="text-sm font-medium">{Distance}</span>
+                  </td>
+                  <td className="p-3">
+                    <span className="text-sm font-medium">{PricePerMile}</span>
+                  </td>
+                  <td className="p-3">
+                    <span className="text-sm font-medium">{Total}</span>
+                  </td>
+                  <td className="p-3">
+                    <Badge variant={Available ? "default" : "destructive"}>
+                      {Available ? "Available" : "Unavailable"}
+                    </Badge>
+                  </td>
+                  <td className="p-3">
+                    <Badge variant={Available ? "default" : "secondary"}>
+                      {Available ? "Has Note" : "No Note"}
+                    </Badge>
+                  </td>
+                  <td className="p-3">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger
+                          render={
+                            <Button variant="ghost" size="icon">
+                              <Pencil className="h-4 w-4" />
+                            </Button>
+                          }
+                        />
+                        <TooltipContent>
+                          <p>Edit Load</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </td>
+                </tr>
+              ),
             )}
           </tbody>
         </table>
       </div>
+
+      {/* Pagination (static for now) */}
       <div className="border-border flex items-center justify-between border-t py-4">
         <span className="text-muted-foreground text-sm">Page 1 of 10</span>
         <div className="flex gap-2">
