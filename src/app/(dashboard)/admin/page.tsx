@@ -29,6 +29,7 @@ const Admin = () => {
   const drivers = allDrivers?.data;
   const trucks = allTrucks?.data;
 
+  const loadLoading = isLoadLoading || isLoadFetching;
   const loading =
     isLoadLoading ||
     isDriverLoading ||
@@ -77,7 +78,7 @@ const Admin = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         <div className="col-span-2 bg-background rounded-lg shadow p-5">
-          <TableLoads loads={allLoads} />
+          <TableLoads loads={allLoads} isFetching={loadLoading} />
         </div>
         <div>
           <StatsCards

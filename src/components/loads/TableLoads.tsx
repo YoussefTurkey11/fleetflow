@@ -8,6 +8,7 @@ import {
   Pencil,
   Search,
 } from "lucide-react";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,10 +19,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Load, TableLoadsProps } from "@/types/loadType";
+
+import { ApiResponseLoads, Load } from "@/types/loadType";
+
 import { useTableSort } from "@/hooks/useTableSort";
 import { useTableSearch } from "@/hooks/useTableSearch";
 import { useTableFilter } from "@/hooks/useTableFilter";
+import { useTablePagination } from "@/hooks/useTablePagination";
+import { Skeleton } from "../ui/skeleton";
 
 const TABS = [
   { label: "All", value: "all" },
@@ -42,16 +47,25 @@ const TABLE_HEAD = [
 
 type SortKey = "id" | "Route" | "Available" | "HasNote";
 
-export function TableLoads({ loads }: TableLoadsProps) {
+export function TableLoads({
+  loads,
+  isFetching,
+}: {
+  loads: ApiResponseLoads | undefined;
+  isFetching: boolean;
+}) {
   const rows = loads?.data ?? [];
+  const skeletonRows = Array.from({ length: 3 });
 
-  // Search Hook
+  /* ---------------- search ---------------- */
+
   const { search, setSearch, filteredRowsSearch } = useTableSearch(rows, [
     "Route",
     "id",
   ]);
 
-  // Filter Hook
+  /* ---------------- filter ---------------- */
+
   const { filter, setFilter, filteredRowsFilter } = useTableFilter(
     filteredRowsSearch,
     (row, filter) => {
@@ -61,23 +75,30 @@ export function TableLoads({ loads }: TableLoadsProps) {
     },
   );
 
-  // Sort Hook
+  /* ---------------- sort ---------------- */
+
   const { sortedRows, handleSort, sortKey, sortDirection } =
     useTableSort<Load>(filteredRowsFilter);
 
-  // Sort icon helper
+  /* ---------------- pagination ---------------- */
+
+  const { paginatedRows, page, pageCount, nextPage, prevPage } =
+    useTablePagination(sortedRows, 8);
+
+  /* ---------------- helpers ---------------- */
+
   const getSortIcon = (columnKey: SortKey) => {
     if (sortKey !== columnKey) return <ArrowUpDown className="h-4 w-4" />;
-    return sortDirection === "asc" ? (
-      <ArrowUp className="h-4 w-4" />
-    ) : (
-      <ArrowDown className="h-4 w-4" />
-    );
+
+    if (sortDirection === "asc") return <ArrowUp className="h-4 w-4" />;
+
+    return <ArrowDown className="h-4 w-4" />;
   };
 
   return (
     <div className="w-full">
       {/* Header */}
+
       <div className="mb-8 flex items-center justify-between gap-8">
         <div>
           <h6 className="text-base font-semibold">Loads list</h6>
@@ -85,10 +106,12 @@ export function TableLoads({ loads }: TableLoadsProps) {
             See information about all loads
           </p>
         </div>
+
         <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
           <Button variant="outline" size="sm">
             View all
           </Button>
+
           <Button size="sm">
             <Box className="mr-2 h-4 w-4" />
             Add Load
@@ -97,6 +120,7 @@ export function TableLoads({ loads }: TableLoadsProps) {
       </div>
 
       {/* Tabs + Search */}
+
       <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
         <Tabs
           value={filter}
@@ -114,6 +138,7 @@ export function TableLoads({ loads }: TableLoadsProps) {
 
         <div className="relative w-full md:w-72">
           <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
+
           <Input
             placeholder="Search"
             className="pl-9"
@@ -124,7 +149,7 @@ export function TableLoads({ loads }: TableLoadsProps) {
       </div>
 
       {/* Table */}
-      <div className="border-border mt-4 w-full overflow-x-scroll rounded-lg border">
+      <div className="border-border mt-4 w-full overflow-x-auto rounded-lg border">
         <table className="w-full">
           <thead className="border-border bg-muted border-b text-sm font-medium">
             <tr>
@@ -136,11 +161,15 @@ export function TableLoads({ loads }: TableLoadsProps) {
                   "HasNote",
                   null,
                 ];
+
                 const key = sortKeys[index];
+
                 return (
                   <th
                     key={head}
-                    className={`px-2.5 py-2 text-start font-medium ${key ? "hover:bg-muted/80 cursor-pointer" : ""}`}
+                    className={`px-2.5 py-2 text-start font-medium ${
+                      key ? "hover:bg-muted/80 cursor-pointer" : ""
+                    }`}
                     onClick={() => key && handleSort(key)}
                   >
                     <div className="text-muted-foreground flex items-center justify-between gap-2">
@@ -154,73 +183,119 @@ export function TableLoads({ loads }: TableLoadsProps) {
           </thead>
 
           <tbody className="text-sm">
-            {sortedRows.map(
-              (
-                { id, Route, Distance, PricePerMile, Total, Available },
-                index,
-              ) => (
-                <tr
-                  key={index}
-                  className="border-border border-b last:border-0"
-                >
-                  <td className="p-3">
-                    <span className="text-sm font-medium">{id}</span>
-                  </td>
-                  <td className="p-3">
-                    <span className="text-sm font-medium truncate">
-                      {Route}
-                    </span>
-                  </td>
-                  <td className="p-3">
-                    <span className="text-sm font-medium">{Distance}</span>
-                  </td>
-                  <td className="p-3">
-                    <span className="text-sm font-medium">{PricePerMile}</span>
-                  </td>
-                  <td className="p-3">
-                    <span className="text-sm font-medium">{Total}</span>
-                  </td>
-                  <td className="p-3">
-                    <Badge variant={Available ? "default" : "destructive"}>
-                      {Available ? "Available" : "Unavailable"}
-                    </Badge>
-                  </td>
-                  <td className="p-3">
-                    <Badge variant={Available ? "default" : "secondary"}>
-                      {Available ? "Has Note" : "No Note"}
-                    </Badge>
-                  </td>
-                  <td className="p-3">
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger
-                          render={
-                            <Button variant="ghost" size="icon">
-                              <Pencil className="h-4 w-4" />
-                            </Button>
-                          }
-                        />
-                        <TooltipContent>
-                          <p>Edit Load</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </td>
-                </tr>
-              ),
-            )}
+            {isFetching
+              ? skeletonRows.map((_, i) => (
+                  <tr key={i} className="border-border border-b">
+                    <td className="p-3">
+                      <Skeleton className="h-4 w-10" />
+                    </td>
+
+                    <td className="p-3">
+                      <Skeleton className="h-4 w-32" />
+                    </td>
+
+                    <td className="p-3">
+                      <Skeleton className="h-4 w-16" />
+                    </td>
+
+                    <td className="p-3">
+                      <Skeleton className="h-4 w-20" />
+                    </td>
+
+                    <td className="p-3">
+                      <Skeleton className="h-4 w-20" />
+                    </td>
+
+                    <td className="p-3">
+                      <Skeleton className="h-6 w-24 rounded-full" />
+                    </td>
+
+                    <td className="p-3">
+                      <Skeleton className="h-6 w-24 rounded-full" />
+                    </td>
+
+                    <td className="p-3">
+                      <Skeleton className="h-8 w-8 rounded-md" />
+                    </td>
+                  </tr>
+                ))
+              : paginatedRows.map(
+                  (
+                    { id, Route, Distance, PricePerMile, Total, Available },
+                    index,
+                  ) => (
+                    <tr
+                      key={index}
+                      className="border-border border-b last:border-0"
+                    >
+                      <td className="p-3">{id}</td>
+
+                      <td className="p-3 truncate">{Route}</td>
+
+                      <td className="p-3">{Distance}</td>
+
+                      <td className="p-3">${PricePerMile}</td>
+
+                      <td className="p-3 font-semibold">${Total}</td>
+
+                      <td className="p-3">
+                        <Badge variant={Available ? "default" : "destructive"}>
+                          {Available ? "Available" : "Unavailable"}
+                        </Badge>
+                      </td>
+
+                      <td className="p-3">
+                        <Badge variant={Available ? "default" : "secondary"}>
+                          {Available ? "Has Note" : "No Note"}
+                        </Badge>
+                      </td>
+
+                      <td className="p-3">
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger
+                              render={
+                                <Button variant="ghost" size="icon">
+                                  <Pencil className="h-4 w-4" />
+                                </Button>
+                              }
+                            />
+                            <TooltipContent>
+                              <p>Edit Load</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </td>
+                    </tr>
+                  ),
+                )}
           </tbody>
         </table>
       </div>
 
-      {/* Pagination (static for now) */}
+      {/* Pagination */}
+
       <div className="border-border flex items-center justify-between border-t py-4">
-        <span className="text-muted-foreground text-sm">Page 1 of 10</span>
+        <span className="text-muted-foreground text-sm">
+          Page {page} of {pageCount}
+        </span>
+
         <div className="flex gap-2">
-          <Button variant="outline" size="sm">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={prevPage}
+            disabled={page === 1}
+          >
             Previous
           </Button>
-          <Button variant="outline" size="sm">
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={nextPage}
+            disabled={page === pageCount}
+          >
             Next
           </Button>
         </div>
