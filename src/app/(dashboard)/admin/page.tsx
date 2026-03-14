@@ -1,8 +1,41 @@
+"use client";
+import { TableLoads } from "@/components/loads/TableLoads";
 import StatsCards from "@/components/shared/StatsCards";
 import Title from "@/components/shared/Title";
+import { useAllDriversQuery } from "@/redux/apis/driverApi";
+import { useAllLoadsQuery } from "@/redux/apis/loadApi";
+import { useAllTrucksQuery } from "@/redux/apis/truckApi";
 import { Box, TruckElectric, UserRound, Wallet } from "lucide-react";
 
 const Admin = () => {
+  const {
+    data: allLoads,
+    isLoading: isLoadLoading,
+    isFetching: isLoadFetching,
+  } = useAllLoadsQuery();
+  const {
+    data: allDrivers,
+    isLoading: isDriverLoading,
+    isFetching: isDriverFetching,
+  } = useAllDriversQuery();
+  const {
+    data: allTrucks,
+    isLoading: isTruckLoading,
+    isFetching: isTruckFetching,
+  } = useAllTrucksQuery();
+
+  const loads = allLoads?.data;
+  const drivers = allDrivers?.data;
+  const trucks = allTrucks?.data;
+
+  const loading =
+    isLoadLoading ||
+    isDriverLoading ||
+    isTruckLoading ||
+    isLoadFetching ||
+    isDriverFetching ||
+    isTruckFetching;
+
   return (
     <div className="p-5">
       <Title
@@ -15,26 +48,45 @@ const Admin = () => {
           icon={<Box size={25} />}
           precentage={12.5}
           title={"Active Loads"}
-          count={124}
+          count={loads?.length ?? 0}
+          loading={loading}
         />
         <StatsCards
           icon={<UserRound size={25} />}
           precentage={4.2}
           title={"Drivers Online"}
-          count={86}
+          count={drivers?.length ?? 0}
+          loading={loading}
         />
         <StatsCards
           icon={<TruckElectric size={25} />}
           precentage={-2.1}
           title={"Trucks Available"}
-          count={22}
+          count={trucks?.length ?? 0}
+          loading={loading}
         />
         <StatsCards
           icon={<Wallet size={25} />}
           precentage={18.3}
           title={"Revenue (Monthly)"}
           count={54200}
+          loading={loading}
         />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <div className="col-span-2 bg-background rounded-lg shadow p-5">
+          <TableLoads loads={allLoads} />
+        </div>
+        <div>
+          <StatsCards
+            icon={<Wallet size={25} />}
+            precentage={18.3}
+            title={"Revenue (Monthly)"}
+            count={54200}
+            loading={loading}
+          />
+        </div>
       </div>
     </div>
   );

@@ -15,7 +15,7 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Auth", "Users"],
+  tagTypes: ["Auth", "Users", "Drivers", "Loads", "Trucks"],
   refetchOnFocus: false,
   refetchOnReconnect: false,
   refetchOnMountOrArgChange: true,
