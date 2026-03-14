@@ -6,19 +6,19 @@ export const userApi = api.injectEndpoints({
     // All Users
     allUsers: builder.query<User[], void>({
       query: () => `/api/users`,
-      providesTags: ["Users"],
+      providesTags: [{ type: "Users", id: "LIST" }],
     }),
 
     // Single User
     singleUser: builder.query<User, void>({
       query: (id) => `{{strapi}}/api/users/${id}`,
-      providesTags: ["Users"],
+      providesTags: [{ type: "Users", id: "LIST" }],
     }),
 
     // Me
     me: builder.query<User, void>({
       query: () => `/api/users/me`,
-      providesTags: ["Users"],
+      providesTags: [{ type: "Users", id: "LIST" }],
     }),
 
     // Udpate User

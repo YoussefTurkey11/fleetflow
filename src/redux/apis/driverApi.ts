@@ -10,13 +10,13 @@ export const driverApi = api.injectEndpoints({
     // All Drivers
     allDrivers: builder.query<ApiResponseDrivers, void>({
       query: () => `/api/drivers?populate=*`,
-      providesTags: ["Drivers"],
+      providesTags: [{ type: "Drivers", id: "LIST" }],
     }),
 
     // Single Driver
     singleDriver: builder.query<ApiResponseDriver, string>({
       query: (documentId) => `/api/drivers/${documentId}?populate=*`,
-      providesTags: ["Drivers"],
+      providesTags: [{ type: "Drivers", id: "LIST" }],
     }),
 
     // Create Driver

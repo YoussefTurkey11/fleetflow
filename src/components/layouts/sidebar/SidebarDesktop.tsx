@@ -29,7 +29,6 @@ const SidebarDesktop = () => {
       className="
         hidden lg:flex
         p-5
-        h-screen
         border-r
         border-ring/30
         bg-background

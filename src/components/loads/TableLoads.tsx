@@ -27,6 +27,8 @@ import { useTableSearch } from "@/hooks/useTableSearch";
 import { useTableFilter } from "@/hooks/useTableFilter";
 import { useTablePagination } from "@/hooks/useTablePagination";
 import { Skeleton } from "../ui/skeleton";
+import Link from "next/link";
+import { AddLoad } from "./AddLoad";
 
 const TABS = [
   { label: "All", value: "all" },
@@ -40,12 +42,11 @@ const TABLE_HEAD = [
   "Distance",
   "Price/Mile",
   "Total",
-  "Available",
-  "HasNote",
+  "Status",
   "Action",
 ];
 
-type SortKey = "id" | "Route" | "Available" | "HasNote";
+type SortKey = "id" | "Route" | "Available";
 
 export function TableLoads({
   loads,
@@ -108,14 +109,14 @@ export function TableLoads({
         </div>
 
         <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-          <Button variant="outline" size="sm">
-            View all
-          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            nativeButton={false}
+            render={<Link href="/loads">View all</Link>}
+          />
 
-          <Button size="sm">
-            <Box className="mr-2 h-4 w-4" />
-            Add Load
-          </Button>
+          <AddLoad />
         </div>
       </div>
 
@@ -158,7 +159,6 @@ export function TableLoads({
                   "id",
                   "Route",
                   "Available",
-                  "HasNote",
                   null,
                 ];
 
@@ -213,10 +213,6 @@ export function TableLoads({
                     <td className="p-3">
                       <Skeleton className="h-6 w-24 rounded-full" />
                     </td>
-
-                    <td className="p-3">
-                      <Skeleton className="h-8 w-8 rounded-md" />
-                    </td>
                   </tr>
                 ))
               : paginatedRows.map(
@@ -241,12 +237,6 @@ export function TableLoads({
                       <td className="p-3">
                         <Badge variant={Available ? "default" : "destructive"}>
                           {Available ? "Available" : "Unavailable"}
-                        </Badge>
-                      </td>
-
-                      <td className="p-3">
-                        <Badge variant={Available ? "default" : "secondary"}>
-                          {Available ? "Has Note" : "No Note"}
                         </Badge>
                       </td>
 

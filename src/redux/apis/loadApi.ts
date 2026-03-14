@@ -1,4 +1,9 @@
-import { ApiResponseLoad, ApiResponseLoads, Load } from "@/types/loadType";
+import {
+  ApiResponseLoad,
+  ApiResponseLoads,
+  CreateLoad,
+  Load,
+} from "@/types/loadType";
 import { api } from "../baseApi";
 
 export const loadApi = api.injectEndpoints({
@@ -6,17 +11,17 @@ export const loadApi = api.injectEndpoints({
     // All Loads
     allLoads: builder.query<ApiResponseLoads, void>({
       query: () => `/api/loads?populate=*`,
-      providesTags: ["Loads"],
+      providesTags: [{ type: "Loads", id: "LIST" }],
     }),
 
     // Single Load
     singleLoad: builder.query<ApiResponseLoad, string>({
       query: (documentId) => `/api/loads/${documentId}?populate=*`,
-      providesTags: ["Loads"],
+      providesTags: [{ type: "Loads", id: "LIST" }],
     }),
 
     // Create Load
-    createLoad: builder.mutation<ApiResponseLoad, Load>({
+    createLoad: builder.mutation<ApiResponseLoad, CreateLoad>({
       query: (body) => ({
         url: `/api/loads`,
         method: "POST",

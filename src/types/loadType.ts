@@ -17,7 +17,6 @@ export type Load = {
   PricePerMile: number;
   Total: number;
   Available: boolean;
-  HasNote: boolean;
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
@@ -25,4 +24,12 @@ export type Load = {
 
 export type TableLoadsProps = {
   loads?: ApiResponseLoads;
+};
+
+export type CreateLoad = {
+  Route: string;
+  Distance: string;
+  PricePerMile: string;
+  Total: string;
+  Available: boolean;
 };

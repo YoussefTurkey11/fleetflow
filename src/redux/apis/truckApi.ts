@@ -6,13 +6,13 @@ export const truckApi = api.injectEndpoints({
     // All Trucks
     allTrucks: builder.query<ApiResponseTrucks, void>({
       query: () => `/api/trucks?populate=*`,
-      providesTags: ["Trucks"],
+      providesTags: [{ type: "Trucks", id: "LIST" }],
     }),
 
     // Single Truck
     singleTruck: builder.query<ApiResponseTruck, string>({
       query: (documentId) => `/api/trucks/${documentId}?populate=*`,
-      providesTags: ["Trucks"],
+      providesTags: [{ type: "Trucks", id: "LIST" }],
     }),
 
     // Create Truck
