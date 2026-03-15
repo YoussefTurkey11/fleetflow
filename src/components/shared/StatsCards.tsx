@@ -46,7 +46,9 @@ const StatsCards = ({
 
       <div className="flex flex-col">
         <p className="text-sm text-muted-foreground">{title}</p>
-        <h4 className="text-3xl font-bold">{count}</h4>
+        <h4 className="text-3xl font-bold">
+          {title === "Revenue (Monthly)" ? `$${count}` : count}
+        </h4>
       </div>
     </div>
   );

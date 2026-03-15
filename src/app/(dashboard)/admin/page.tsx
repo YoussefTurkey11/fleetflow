@@ -1,11 +1,13 @@
 "use client";
 import { TableLoads } from "@/components/loads/TableLoads";
+import LoadsChart from "@/components/loads/LoadsChart";
 import StatsCards from "@/components/shared/StatsCards";
 import Title from "@/components/shared/Title";
 import { useAllDriversQuery } from "@/redux/apis/driverApi";
 import { useAllLoadsQuery } from "@/redux/apis/loadApi";
 import { useAllTrucksQuery } from "@/redux/apis/truckApi";
 import { Box, TruckElectric, UserRound, Wallet } from "lucide-react";
+import LoadsMoneyChart from "@/components/loads/LoadsMoneyChart";
 
 const Admin = () => {
   const {
@@ -27,6 +29,16 @@ const Admin = () => {
   const loads = allLoads?.data;
   const drivers = allDrivers?.data;
   const trucks = allTrucks?.data;
+
+  const availableLoads = loads?.filter((load) => load.Available);
+  const unAvailableLoads = loads?.filter((load) => !load.Available);
+  const chartData =
+    loads?.map((load) => ({
+      id: load.id,
+      total: Number(load.Total),
+    })) ?? [];
+  const totalRevenue =
+    loads?.reduce((sum, load) => sum + Number(load.Total), 0) ?? 0;
 
   const loadLoading = isLoadLoading || isLoadFetching;
   const loading =
@@ -70,7 +82,7 @@ const Admin = () => {
           icon={<Wallet size={25} />}
           precentage={18.3}
           title={"Revenue (Monthly)"}
-          count={54200}
+          count={totalRevenue ?? 0}
           loading={loading}
         />
       </div>
@@ -79,14 +91,14 @@ const Admin = () => {
         <div className="col-span-2 bg-background rounded-lg shadow p-5">
           <TableLoads loads={allLoads} isFetching={loadLoading} />
         </div>
-        <div>
-          <StatsCards
-            icon={<Wallet size={25} />}
-            precentage={18.3}
-            title={"Revenue (Monthly)"}
-            count={54200}
-            loading={loading}
+        <div className="space-y-5">
+          <LoadsChart
+            loads={loads?.length ?? 0}
+            available={availableLoads?.length ?? 0}
+            unavailable={unAvailableLoads?.length ?? 0}
+            loading={loadLoading}
           />
+          <LoadsMoneyChart loads={chartData} loading={loadLoading} />
         </div>
       </div>
     </div>
