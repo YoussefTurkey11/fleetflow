@@ -10,15 +10,28 @@ export type ApiResponseDriver = {
 };
 
 export type Driver = {
-  id: number;
-  documentId: string;
+  id?: number;
+  documentId?: string;
   DriverDetails: string;
   PhoneNumber: string;
   License: string;
-  PricePerMile: number;
+  PricePerMile: string;
   HireDate: string;
   Available: boolean;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+};
+
+export type TableDriversProps = {
+  drivers?: ApiResponseDrivers;
+};
+
+export type CreateDriver = {
+  DriverDetails: string;
+  PhoneNumber: string;
+  License: string;
+  PricePerMile: string;
+  HireDate: string;
+  Available: boolean;
 };
