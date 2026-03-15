@@ -1,11 +1,9 @@
 import {
-  ChartCandlestick,
   CircleUserRound,
   Container,
   LayoutDashboard,
   ShieldUser,
   Truck,
-  TruckElectric,
   Van,
 } from "lucide-react";
 
@@ -52,18 +50,6 @@ export const menuItem: SidebarItem[] = [
         name: "trucks",
         link: "trucks",
         icon: <Van size={20} />,
-      },
-      {
-        id: "miantain",
-        name: "maintainance",
-        link: "maintainance",
-        icon: <TruckElectric size={20} />,
-      },
-      {
-        id: "turksFinancial",
-        name: "turks Financial",
-        link: "turksFinancial",
-        icon: <ChartCandlestick size={20} />,
       },
     ],
   },
