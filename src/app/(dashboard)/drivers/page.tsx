@@ -1,11 +1,9 @@
 "use client";
 
 import { TableDrivers } from "@/components/drivers/TableDrivers";
-import { TableLoads } from "@/components/loads/TableLoads";
 import StatsCards from "@/components/shared/StatsCards";
 import Title from "@/components/shared/Title";
 import { useAllDriversQuery } from "@/redux/apis/driverApi";
-import { useAllLoadsQuery } from "@/redux/apis/loadApi";
 import { BadgeCheck, CircleX, User2 } from "lucide-react";
 
 const Drivers = () => {
@@ -16,8 +14,8 @@ const Drivers = () => {
   } = useAllDriversQuery();
 
   const drivers = allDrivers?.data;
-  const availableLoads = drivers?.filter((driver) => driver.Available);
-  const unAvailableLoads = drivers?.filter((driver) => !driver.Available);
+  const availableDrivers = drivers?.filter((driver) => driver.Available);
+  const unAvailableDrivers = drivers?.filter((driver) => !driver.Available);
   const driverLoading = isDriverLoading || isDriverFetching;
 
   return (
@@ -40,7 +38,7 @@ const Drivers = () => {
           icon={<BadgeCheck size={25} />}
           precentage={12.5}
           title={"Available Drivers"}
-          count={availableLoads?.length ?? 0}
+          count={availableDrivers?.length ?? 0}
           loading={driverLoading}
         />
 
@@ -48,7 +46,7 @@ const Drivers = () => {
           icon={<CircleX size={25} />}
           precentage={12.5}
           title={"Unavailable Drivers"}
-          count={unAvailableLoads?.length ?? 0}
+          count={unAvailableDrivers?.length ?? 0}
           loading={driverLoading}
         />
       </div>

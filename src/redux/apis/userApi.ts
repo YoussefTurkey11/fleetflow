@@ -30,6 +30,15 @@ export const userApi = api.injectEndpoints({
       }),
       invalidatesTags: [{ type: "Users", id: "LIST" }],
     }),
+
+    // Delete User
+    deleteUser: builder.mutation<User, number>({
+      query: (id) => ({
+        url: `/api/users/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [{ type: "Users", id: "LIST" }],
+    }),
   }),
 });
 
@@ -39,4 +48,5 @@ export const {
   useMeQuery,
   useLazyMeQuery,
   useUpdateUserMutation,
+  useDeleteUserMutation,
 } = userApi;

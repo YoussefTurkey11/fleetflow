@@ -1,6 +1,6 @@
 export type ApiResponse = {
   jwt: string;
-  user: User;
+  user: User[];
 };
 
 export type EmailResponse = {
@@ -17,13 +17,14 @@ export type User = {
   id: number;
   documentId: string;
   username: string;
+  Phone?: string;
   email: string;
-  provider: string;
-  confirmed: true;
-  blocked: false;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
+  provider?: string;
+  confirmed: boolean;
+  blocked: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
 };
 
 export type UpdateUserPayload = {
