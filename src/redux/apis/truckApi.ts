@@ -31,7 +31,7 @@ export const truckApi = api.injectEndpoints({
       { documentId: string; body: Partial<Truck> }
     >({
       query: ({ documentId, body }) => ({
-        url: `/api/truck/${documentId}`,
+        url: `/api/trucks/${documentId}`,
         method: "PUT",
         body: { data: body },
       }),

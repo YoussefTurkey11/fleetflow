@@ -10,12 +10,22 @@ export type ApiResponseTruck = {
 };
 
 export type Truck = {
-  id: number;
-  documentId: string;
-  FuelPerMile: number;
-  TotalMileage: number;
+  id?: number;
+  documentId?: string;
+  FuelPerMile: string;
+  TotalMileage: string;
   Available: boolean;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+};
+
+export type TableTrucksProps = {
+  trucks?: ApiResponseTrucks;
+};
+
+export type CreateTruck = {
+  FuelPerMile: string;
+  TotalMileage: string;
+  Available: boolean;
 };
