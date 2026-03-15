@@ -14,6 +14,7 @@ import { Skeleton } from "../ui/skeleton";
 import Link from "next/link";
 import { AddLoad } from "./AddLoad";
 import ActionLoad from "./ActionLoad";
+import { usePathname } from "next/navigation";
 
 const TABS = [
   { label: "All", value: "all" },
@@ -42,6 +43,7 @@ export function TableLoads({
 }) {
   const rows = loads?.data ?? [];
   const skeletonRows = Array.from({ length: 3 });
+  const pathname = usePathname();
 
   /* ---------------- search ---------------- */
 
@@ -94,12 +96,14 @@ export function TableLoads({
         </div>
 
         <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-          <Button
-            variant="outline"
-            size="sm"
-            nativeButton={false}
-            render={<Link href="/loads">View all</Link>}
-          />
+          {pathname.startsWith("/admin") && (
+            <Button
+              variant="outline"
+              size="sm"
+              nativeButton={false}
+              render={<Link href="/loads">View all</Link>}
+            />
+          )}
 
           <AddLoad />
         </div>
