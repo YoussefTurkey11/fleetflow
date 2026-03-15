@@ -36,7 +36,7 @@ export const loadApi = api.injectEndpoints({
       { documentId: string; body: Partial<Load> }
     >({
       query: ({ documentId, body }) => ({
-        url: `/api/load/${documentId}`,
+        url: `/api/loads/${documentId}`,
         method: "PUT",
         body: { data: body },
       }),

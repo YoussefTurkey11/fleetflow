@@ -13,13 +13,13 @@ export type Load = {
   id: number;
   documentId: string;
   Route: string;
-  Distance: number;
-  PricePerMile: number;
-  Total: number;
+  Distance: string;
+  PricePerMile: string;
+  Total: string;
   Available: boolean;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
 };
 
 export type TableLoadsProps = {

@@ -9,7 +9,6 @@ export const useUpdateMeService = () => {
   const [updateUser] = useUpdateUserMutation();
   const dispatch = useAppDispatch();
   const user = useAppSelector((state: RootState) => state.auth.user);
-  console.log(user);
 
   const myInfo = async (data: UserFormSchema) => {
     if (!user) {

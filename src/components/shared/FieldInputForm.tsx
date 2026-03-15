@@ -18,7 +18,7 @@ type TFieldInputForm<T extends FieldValues> = {
   label: string;
   id: Path<T>;
   type: "email" | "text" | "password" | "number";
-  placeholder: string;
+  placeholder?: string;
   errors: FieldErrors<T>;
   register: UseFormRegister<T>;
 };

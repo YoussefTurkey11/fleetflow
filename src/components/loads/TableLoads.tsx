@@ -1,27 +1,11 @@
 "use client";
 
-import {
-  ArrowDown,
-  ArrowUp,
-  ArrowUpDown,
-  Box,
-  Pencil,
-  Search,
-} from "lucide-react";
-
+import { ArrowDown, ArrowUp, ArrowUpDown, Search } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-
 import { ApiResponseLoads, Load } from "@/types/loadType";
-
 import { useTableSort } from "@/hooks/useTableSort";
 import { useTableSearch } from "@/hooks/useTableSearch";
 import { useTableFilter } from "@/hooks/useTableFilter";
@@ -29,6 +13,7 @@ import { useTablePagination } from "@/hooks/useTablePagination";
 import { Skeleton } from "../ui/skeleton";
 import Link from "next/link";
 import { AddLoad } from "./AddLoad";
+import ActionLoad from "./ActionLoad";
 
 const TABS = [
   { label: "All", value: "all" },
@@ -217,7 +202,15 @@ export function TableLoads({
                 ))
               : paginatedRows.map(
                   (
-                    { id, Route, Distance, PricePerMile, Total, Available },
+                    {
+                      id,
+                      documentId,
+                      Route,
+                      Distance,
+                      PricePerMile,
+                      Total,
+                      Available,
+                    },
                     index,
                   ) => (
                     <tr
@@ -241,20 +234,17 @@ export function TableLoads({
                       </td>
 
                       <td className="p-3">
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger
-                              render={
-                                <Button variant="ghost" size="icon">
-                                  <Pencil className="h-4 w-4" />
-                                </Button>
-                              }
-                            />
-                            <TooltipContent>
-                              <p>Edit Load</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
+                        <ActionLoad
+                          load={{
+                            id,
+                            documentId,
+                            Route,
+                            Distance,
+                            PricePerMile,
+                            Total,
+                            Available,
+                          }}
+                        />
                       </td>
                     </tr>
                   ),

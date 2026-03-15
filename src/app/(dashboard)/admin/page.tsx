@@ -25,7 +25,6 @@ const Admin = () => {
   } = useAllTrucksQuery();
 
   const loads = allLoads?.data;
-  console.log(loads);
   const drivers = allDrivers?.data;
   const trucks = allTrucks?.data;
 
