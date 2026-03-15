@@ -52,7 +52,7 @@ export default function LoadsMoneyChart({ loads, loading }: Props) {
               <CartesianGrid horizontal={false} />
 
               <YAxis
-                dataKey="name"
+                dataKey="id"
                 type="category"
                 tickLine={false}
                 axisLine={false}
