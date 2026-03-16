@@ -4,25 +4,25 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+} from "../../ui/dropdown-menu";
 import { Pencil, Trash2 } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import { toast } from "sonner";
 import { useState } from "react";
-import { User } from "@/types/authType";
-import { useDeleteUserMutation } from "@/redux/apis/userApi";
-import { EditUserDialog } from "./EditUserDialog";
+import { Truck } from "@/types/truckType";
+import { useDeleteTruckMutation } from "@/redux/apis/truckApi";
+import { EditTruckDialog } from "./EditTruckDialog";
 
-const ActionUser = ({ user }: { user: User }) => {
+const ActionTruck = ({ truck }: { truck: Truck }) => {
   const [open, setOpen] = useState(false);
-  const [deleteUser, { isLoading }] = useDeleteUserMutation();
+  const [deleteTruck, { isLoading }] = useDeleteTruckMutation();
 
   const handleDelete = async () => {
     try {
-      await deleteUser(user?.id).unwrap();
-      toast.success("User deleted successfully");
+      await deleteTruck(truck?.documentId as string).unwrap();
+      toast.success("Truck deleted successfully");
     } catch {
-      toast.error("Failed to delete user");
+      toast.error("Failed to delete truck");
     }
   };
 
@@ -57,9 +57,9 @@ const ActionUser = ({ user }: { user: User }) => {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <EditUserDialog open={open} setOpen={setOpen} user={user} />
+      <EditTruckDialog open={open} setOpen={setOpen} truck={truck} />
     </>
   );
 };
 
-export default ActionUser;
+export default ActionTruck;

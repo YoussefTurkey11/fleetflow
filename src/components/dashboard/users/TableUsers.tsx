@@ -9,44 +9,47 @@ import { useTableSort } from "@/hooks/useTableSort";
 import { useTableSearch } from "@/hooks/useTableSearch";
 import { useTableFilter } from "@/hooks/useTableFilter";
 import { useTablePagination } from "@/hooks/useTablePagination";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "../../ui/skeleton";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ApiResponseTrucks, Truck } from "@/types/truckType";
-import { AddTruck } from "./AddTruck";
-import ActionTruck from "./ActionTruck";
+import Image from "next/image";
+import { User } from "@/types/authType";
+import ActionUser from "./ActionUser";
 
 const TABS = [
   { label: "All", value: "all" },
-  { label: "Available", value: "available" },
-  { label: "Unavailable", value: "unavailable" },
+  { label: "Confirmed", value: "confirmed" },
+  { label: "Blocked", value: "blocked" },
 ];
 
 const TABLE_HEAD = [
-  "Driver Id",
-  "FuelPerMile",
-  "TotalMileage",
-  "Available",
+  "User Id",
+  "username",
+  "email",
+  "Phone",
+  "confirmed",
+  "blocked",
   "Action",
 ];
 
-type SortKey = "id" | "TotalMileage";
+type SortKey = "id" | "username" | "email";
 
-export function TableTrucks({
-  trucks,
+export function TableUsers({
+  users,
   isFetching,
 }: {
-  trucks: ApiResponseTrucks | undefined;
+  users: User[];
   isFetching: boolean;
 }) {
-  const rows = trucks?.data ?? [];
+  const rows = users ?? [];
   const skeletonRows = Array.from({ length: 3 });
   const pathname = usePathname();
 
   /* ---------------- search ---------------- */
 
   const { search, setSearch, filteredRowsSearch } = useTableSearch(rows, [
-    "TotalMileage",
+    "username",
+    "email",
     "id",
   ]);
 
@@ -55,8 +58,8 @@ export function TableTrucks({
   const { filter, setFilter, filteredRowsFilter } = useTableFilter(
     filteredRowsSearch,
     (row, filter) => {
-      if (filter === "available") return row.Available;
-      if (filter === "unavailable") return !row.Available;
+      if (filter === "confirmed") return row.confirmed;
+      if (filter === "blocked") return row.blocked;
       return true;
     },
   );
@@ -64,7 +67,7 @@ export function TableTrucks({
   /* ---------------- sort ---------------- */
 
   const { sortedRows, handleSort, sortKey, sortDirection } =
-    useTableSort<Truck>(filteredRowsFilter);
+    useTableSort<User>(filteredRowsFilter);
 
   /* ---------------- pagination ---------------- */
 
@@ -87,9 +90,9 @@ export function TableTrucks({
 
       <div className="mb-8 flex items-center justify-between gap-8">
         <div>
-          <h6 className="text-base font-semibold">Trucks list</h6>
+          <h6 className="text-base font-semibold">Users list</h6>
           <p className="text-muted-foreground mt-1 text-sm">
-            See information about all Trucks
+            See information about all Users
           </p>
         </div>
 
@@ -99,11 +102,9 @@ export function TableTrucks({
               variant="outline"
               size="sm"
               nativeButton={false}
-              render={<Link href="/trucks">View all</Link>}
+              render={<Link href="/users">View all</Link>}
             />
           )}
-
-          <AddTruck />
         </div>
       </div>
 
@@ -144,7 +145,8 @@ export function TableTrucks({
               {TABLE_HEAD.map((head, index) => {
                 const sortKeys: (SortKey | null)[] = [
                   "id",
-                  "TotalMileage",
+                  "username",
+                  "email",
                   null,
                 ];
 
@@ -202,36 +204,58 @@ export function TableTrucks({
                   </tr>
                 ))
               : paginatedRows.map(
-                  (
-                    { id, documentId, FuelPerMile, TotalMileage, Available },
-                    index,
-                  ) => (
+                  ({
+                    id,
+                    documentId,
+                    username,
+                    Phone,
+                    email,
+                    confirmed,
+                    blocked,
+                  }) => (
                     <tr
-                      key={index}
+                      key={id}
                       className="border-border border-b last:border-0"
                     >
                       <td className="p-3">{id}</td>
 
                       <td className="p-3 flex items-center gap-2">
-                        {FuelPerMile}
+                        <Image
+                          src={"/images/driver.png"}
+                          width={20}
+                          height={20}
+                          alt={`${username} avatar`}
+                          loading="lazy"
+                        />
+                        <span className="truncate">{username}</span>
                       </td>
 
-                      <td className="p-3">{TotalMileage}</td>
+                      <td className="p-3">{email}</td>
+
+                      <td className="p-3">{Phone ?? "--"}</td>
 
                       <td className="p-3">
-                        <Badge variant={Available ? "default" : "destructive"}>
-                          {Available ? "Available" : "Unavailable"}
+                        <Badge variant={confirmed ? "default" : "destructive"}>
+                          {confirmed ? "Confirmed" : "Unconfirmed"}
                         </Badge>
                       </td>
 
                       <td className="p-3">
-                        <ActionTruck
-                          truck={{
+                        <Badge variant={blocked ? "destructive" : "default"}>
+                          {blocked ? "Blocked" : "Unblocked"}
+                        </Badge>
+                      </td>
+
+                      <td className="p-3">
+                        <ActionUser
+                          user={{
                             id,
                             documentId,
-                            FuelPerMile,
-                            TotalMileage,
-                            Available,
+                            username,
+                            Phone,
+                            email,
+                            confirmed,
+                            blocked,
                           }}
                         />
                       </td>

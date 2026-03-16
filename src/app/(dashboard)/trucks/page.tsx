@@ -2,7 +2,7 @@
 
 import StatsCards from "@/components/shared/StatsCards";
 import Title from "@/components/shared/Title";
-import { TableTrucks } from "@/components/trucks/TableTrucks";
+import { TableTrucks } from "@/components/dashboard/trucks/TableTrucks";
 import { useAllTrucksQuery } from "@/redux/apis/truckApi";
 import { BadgeCheck, CircleX, TruckElectric } from "lucide-react";
 

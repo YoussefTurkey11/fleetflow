@@ -10,11 +10,12 @@ import { useTableSort } from "@/hooks/useTableSort";
 import { useTableSearch } from "@/hooks/useTableSearch";
 import { useTableFilter } from "@/hooks/useTableFilter";
 import { useTablePagination } from "@/hooks/useTablePagination";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "../../ui/skeleton";
 import Link from "next/link";
 import { AddLoad } from "./AddLoad";
 import ActionLoad from "./ActionLoad";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 const TABS = [
   { label: "All", value: "all" },
@@ -28,6 +29,8 @@ const TABLE_HEAD = [
   "Distance",
   "Price/Mile",
   "Total",
+  "Driver",
+  "Truck",
   "Status",
   "Action",
 ];
@@ -213,6 +216,8 @@ export function TableLoads({
                       Distance,
                       PricePerMile,
                       Total,
+                      driver,
+                      truck,
                       Available,
                     },
                     index,
@@ -230,6 +235,25 @@ export function TableLoads({
                       <td className="p-3">${PricePerMile}</td>
 
                       <td className="p-3 font-semibold">${Total}</td>
+
+                      <td className="p-3 flex items-center gap-2">
+                        {driver?.DriverDetails && (
+                          <Image
+                            src={"/images/driver.png"}
+                            width={20}
+                            height={20}
+                            alt={driver?.DriverDetails ?? "driver"}
+                            loading="lazy"
+                          />
+                        )}
+                        <span className="truncate">
+                          {driver?.DriverDetails ?? "--"}
+                        </span>
+                      </td>
+
+                      <td className="p-3 font-semibold">
+                        {truck ? `Truck (${truck?.id})` : "--"}
+                      </td>
 
                       <td className="p-3">
                         <Badge variant={Available ? "default" : "destructive"}>

@@ -11,8 +11,8 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, CirclePlus } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
-import FieldInputForm from "../shared/FieldInputForm";
-import FieldSelectForm from "../shared/FieldSelectForm";
+import FieldInputForm from "../../shared/FieldInputForm";
+import FieldSelectForm from "../../shared/FieldSelectForm";
 import { toast } from "sonner";
 import { useState } from "react";
 import { useCreateTruckMutation } from "@/redux/apis/truckApi";

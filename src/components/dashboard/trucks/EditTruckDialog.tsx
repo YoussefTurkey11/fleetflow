@@ -8,26 +8,26 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useUpdateLoadMutation } from "@/redux/apis/loadApi";
-import {
-  AddLoadFormSchema,
-  addLoadScheme,
-} from "@/validation/load/addLoad.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import FieldInputForm from "../shared/FieldInputForm";
-import FieldSelectForm from "../shared/FieldSelectForm";
+import FieldInputForm from "../../shared/FieldInputForm";
+import FieldSelectForm from "../../shared/FieldSelectForm";
 import { toast } from "sonner";
 import { useEffect } from "react";
+import {
+  AddTruckFormSchema,
+  addTruckScheme,
+} from "@/validation/truck/truck.schema";
+import { useUpdateTruckMutation } from "@/redux/apis/truckApi";
 
 type Props = {
   open: boolean;
   setOpen: (open: boolean) => void;
-  load: any;
+  truck: any;
 };
 
-export function EditLoadDialog({ open, setOpen, load }: Props) {
-  const [updateLoad, { isLoading }] = useUpdateLoadMutation();
+export function EditTruckDialog({ open, setOpen, truck }: Props) {
+  const [updateTruck, { isLoading }] = useUpdateTruckMutation();
 
   const {
     register,
@@ -35,33 +35,31 @@ export function EditLoadDialog({ open, setOpen, load }: Props) {
     formState: { errors },
     reset,
     control,
-  } = useForm<AddLoadFormSchema>({
-    resolver: zodResolver(addLoadScheme),
+  } = useForm<AddTruckFormSchema>({
+    resolver: zodResolver(addTruckScheme),
   });
 
   useEffect(() => {
-    if (load) {
+    if (truck) {
       reset({
-        Route: load.Route,
-        Distance: String(load.Distance),
-        PricePerMile: String(load.PricePerMile),
-        Total: String(load.Total),
-        Available: load.Available,
+        FuelPerMile: String(truck.FuelPerMile),
+        TotalMileage: String(truck.TotalMileage),
+        Available: truck.Available,
       });
     }
-  }, [load, reset]);
+  }, [truck, reset]);
 
-  const onSubmit = async (data: AddLoadFormSchema) => {
+  const onSubmit = async (data: AddTruckFormSchema) => {
     try {
-      await updateLoad({
-        documentId: load.documentId,
+      await updateTruck({
+        documentId: truck.documentId,
         body: data,
       }).unwrap();
 
-      toast.success("Load updated successfully");
+      toast.success("Truck updated successfully");
       setOpen(false);
     } catch (error) {
-      toast.error("Failed to update load");
+      toast.error("Failed to update truck");
     }
   };
 
@@ -69,38 +67,24 @@ export function EditLoadDialog({ open, setOpen, load }: Props) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Edit Load</DialogTitle>
+          <DialogTitle>Edit Truck</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <FieldInputForm
-            label="Route"
-            id="Route"
+            label="Fuel Per Mile"
+            id="FuelPerMile"
             type="text"
+            placeholder="e.g. 26"
             register={register}
             errors={errors}
           />
 
           <FieldInputForm
-            label="Distance"
-            id="Distance"
+            label="Total Mileage"
+            id="TotalMileage"
             type="text"
-            register={register}
-            errors={errors}
-          />
-
-          <FieldInputForm
-            label="Price Per Mile"
-            id="PricePerMile"
-            type="text"
-            register={register}
-            errors={errors}
-          />
-
-          <FieldInputForm
-            label="Total"
-            id="Total"
-            type="text"
+            placeholder="e.g. 2454"
             register={register}
             errors={errors}
           />
@@ -108,6 +92,7 @@ export function EditLoadDialog({ open, setOpen, load }: Props) {
           <Controller
             name="Available"
             control={control}
+            key="available-controller"
             render={({ field }) => (
               <FieldSelectForm
                 label="Availability"
@@ -122,7 +107,7 @@ export function EditLoadDialog({ open, setOpen, load }: Props) {
 
           <DialogFooter>
             <Button type="submit" disabled={isLoading}>
-              {isLoading ? "Updating..." : "Update Load"}
+              {isLoading ? "Updating..." : "Update Truck"}
             </Button>
           </DialogFooter>
         </form>

@@ -45,41 +45,43 @@ const Profile = () => {
   };
 
   return (
-    <section className="flex justify-center items-center flex-col gap-5 min-h-[calc(100vh-81px)] ">
-      <div>
-        <Image
-          src={"/images/driver.png"}
-          width={100}
-          height={100}
-          alt=""
-          loading="lazy"
-          className="mx-auto rounded-full"
-        />
+    <section className="flex justify-center items-center min-h-[calc(100vh-81px)]">
+      <div className="bg-background rounded-lg p-5 flex items-center justify-center flex-col gap-5 w-70">
+        <div>
+          <Image
+            src={"/images/driver.png"}
+            width={100}
+            height={100}
+            alt=""
+            loading="lazy"
+            className="mx-auto rounded-full"
+          />
+        </div>
+
+        <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+          <FieldInputForm
+            label="username"
+            id="username"
+            type="text"
+            placeholder="Enter your Username"
+            register={register}
+            errors={errors}
+          />
+
+          <FieldInputForm
+            label="email"
+            id="email"
+            type="email"
+            placeholder="Enter your Email"
+            register={register}
+            errors={errors}
+          />
+
+          <Button type="submit" className={"w-full"} disabled={isSubmitting}>
+            Update
+          </Button>
+        </form>
       </div>
-
-      <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
-        <FieldInputForm
-          label="username"
-          id="username"
-          type="text"
-          placeholder="Enter your Username"
-          register={register}
-          errors={errors}
-        />
-
-        <FieldInputForm
-          label="email"
-          id="email"
-          type="email"
-          placeholder="Enter your Email"
-          register={register}
-          errors={errors}
-        />
-
-        <Button type="submit" className={"w-full"} disabled={isSubmitting}>
-          Update
-        </Button>
-      </form>
     </section>
   );
 };

@@ -2,7 +2,7 @@
 
 import StatsCards from "@/components/shared/StatsCards";
 import Title from "@/components/shared/Title";
-import { TableUsers } from "@/components/users/TableUsers";
+import { TableUsers } from "@/components/dashboard/users/TableUsers";
 import { useAllUsersQuery } from "@/redux/apis/userApi";
 import { BadgeCheck, CircleX, User2 } from "lucide-react";
 

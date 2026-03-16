@@ -4,25 +4,25 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+} from "../../ui/dropdown-menu";
 import { Pencil, Trash2 } from "lucide-react";
-import { Button } from "../ui/button";
-import { useDeleteLoadMutation } from "@/redux/apis/loadApi";
+import { Button } from "../../ui/button";
 import { toast } from "sonner";
 import { useState } from "react";
-import { EditLoadDialog } from "./EditLoadDialog";
-import { Load } from "@/types/loadType";
+import { User } from "@/types/authType";
+import { useDeleteUserMutation } from "@/redux/apis/userApi";
+import { EditUserDialog } from "./EditUserDialog";
 
-const ActionLoad = ({ load }: { load: Load }) => {
+const ActionUser = ({ user }: { user: User }) => {
   const [open, setOpen] = useState(false);
-  const [deleteLoad, { isLoading }] = useDeleteLoadMutation();
+  const [deleteUser, { isLoading }] = useDeleteUserMutation();
 
   const handleDelete = async () => {
     try {
-      await deleteLoad(load.documentId).unwrap();
-      toast.success("Load deleted successfully");
+      await deleteUser(user?.id).unwrap();
+      toast.success("User deleted successfully");
     } catch {
-      toast.error("Failed to delete load");
+      toast.error("Failed to delete user");
     }
   };
 
@@ -57,9 +57,9 @@ const ActionLoad = ({ load }: { load: Load }) => {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <EditLoadDialog open={open} setOpen={setOpen} load={load} />
+      <EditUserDialog open={open} setOpen={setOpen} user={user} />
     </>
   );
 };
 
-export default ActionLoad;
+export default ActionUser;

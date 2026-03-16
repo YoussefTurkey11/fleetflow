@@ -4,9 +4,9 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+} from "../../ui/dropdown-menu";
 import { Pencil, Trash2 } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import { toast } from "sonner";
 import { useState } from "react";
 import { useDeleteDriverMutation } from "@/redux/apis/driverApi";

@@ -1,6 +1,6 @@
 "use client";
 
-import { TableDrivers } from "@/components/drivers/TableDrivers";
+import { TableDrivers } from "@/components/dashboard/drivers/TableDrivers";
 import StatsCards from "@/components/shared/StatsCards";
 import Title from "@/components/shared/Title";
 import { useAllDriversQuery } from "@/redux/apis/driverApi";

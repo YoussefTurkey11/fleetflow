@@ -1,13 +1,13 @@
 "use client";
-import { TableLoads } from "@/components/loads/TableLoads";
-import LoadsChart from "@/components/loads/LoadsChart";
+import { TableLoads } from "@/components/dashboard/loads/TableLoads";
+import LoadsChart from "@/components/dashboard/loads/LoadsChart";
 import StatsCards from "@/components/shared/StatsCards";
 import Title from "@/components/shared/Title";
 import { useAllDriversQuery } from "@/redux/apis/driverApi";
 import { useAllLoadsQuery } from "@/redux/apis/loadApi";
 import { useAllTrucksQuery } from "@/redux/apis/truckApi";
 import { Box, TruckElectric, UserRound, Wallet } from "lucide-react";
-import LoadsMoneyChart from "@/components/loads/LoadsMoneyChart";
+import LoadsMoneyChart from "@/components/dashboard/loads/LoadsMoneyChart";
 
 const Admin = () => {
   const {

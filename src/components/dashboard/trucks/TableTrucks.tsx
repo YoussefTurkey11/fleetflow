@@ -9,47 +9,44 @@ import { useTableSort } from "@/hooks/useTableSort";
 import { useTableSearch } from "@/hooks/useTableSearch";
 import { useTableFilter } from "@/hooks/useTableFilter";
 import { useTablePagination } from "@/hooks/useTablePagination";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "../../ui/skeleton";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import Image from "next/image";
-import { User } from "@/types/authType";
-import ActionUser from "./ActionUser";
+import { ApiResponseTrucks, Truck } from "@/types/truckType";
+import { AddTruck } from "./AddTruck";
+import ActionTruck from "./ActionTruck";
 
 const TABS = [
   { label: "All", value: "all" },
-  { label: "Confirmed", value: "confirmed" },
-  { label: "Blocked", value: "blocked" },
+  { label: "Available", value: "available" },
+  { label: "Unavailable", value: "unavailable" },
 ];
 
 const TABLE_HEAD = [
-  "User Id",
-  "username",
-  "email",
-  "Phone",
-  "confirmed",
-  "blocked",
+  "Driver Id",
+  "FuelPerMile",
+  "TotalMileage",
+  "Available",
   "Action",
 ];
 
-type SortKey = "id" | "username" | "email";
+type SortKey = "id" | "TotalMileage";
 
-export function TableUsers({
-  users,
+export function TableTrucks({
+  trucks,
   isFetching,
 }: {
-  users: User[];
+  trucks: ApiResponseTrucks | undefined;
   isFetching: boolean;
 }) {
-  const rows = users ?? [];
+  const rows = trucks?.data ?? [];
   const skeletonRows = Array.from({ length: 3 });
   const pathname = usePathname();
 
   /* ---------------- search ---------------- */
 
   const { search, setSearch, filteredRowsSearch } = useTableSearch(rows, [
-    "username",
-    "email",
+    "TotalMileage",
     "id",
   ]);
 
@@ -58,8 +55,8 @@ export function TableUsers({
   const { filter, setFilter, filteredRowsFilter } = useTableFilter(
     filteredRowsSearch,
     (row, filter) => {
-      if (filter === "confirmed") return row.confirmed;
-      if (filter === "blocked") return row.blocked;
+      if (filter === "available") return row.Available;
+      if (filter === "unavailable") return !row.Available;
       return true;
     },
   );
@@ -67,7 +64,7 @@ export function TableUsers({
   /* ---------------- sort ---------------- */
 
   const { sortedRows, handleSort, sortKey, sortDirection } =
-    useTableSort<User>(filteredRowsFilter);
+    useTableSort<Truck>(filteredRowsFilter);
 
   /* ---------------- pagination ---------------- */
 
@@ -90,9 +87,9 @@ export function TableUsers({
 
       <div className="mb-8 flex items-center justify-between gap-8">
         <div>
-          <h6 className="text-base font-semibold">Users list</h6>
+          <h6 className="text-base font-semibold">Trucks list</h6>
           <p className="text-muted-foreground mt-1 text-sm">
-            See information about all Users
+            See information about all Trucks
           </p>
         </div>
 
@@ -102,9 +99,11 @@ export function TableUsers({
               variant="outline"
               size="sm"
               nativeButton={false}
-              render={<Link href="/users">View all</Link>}
+              render={<Link href="/trucks">View all</Link>}
             />
           )}
+
+          <AddTruck />
         </div>
       </div>
 
@@ -145,8 +144,7 @@ export function TableUsers({
               {TABLE_HEAD.map((head, index) => {
                 const sortKeys: (SortKey | null)[] = [
                   "id",
-                  "username",
-                  "email",
+                  "TotalMileage",
                   null,
                 ];
 
@@ -204,58 +202,36 @@ export function TableUsers({
                   </tr>
                 ))
               : paginatedRows.map(
-                  ({
-                    id,
-                    documentId,
-                    username,
-                    Phone,
-                    email,
-                    confirmed,
-                    blocked,
-                  }) => (
+                  (
+                    { id, documentId, FuelPerMile, TotalMileage, Available },
+                    index,
+                  ) => (
                     <tr
-                      key={id}
+                      key={index}
                       className="border-border border-b last:border-0"
                     >
                       <td className="p-3">{id}</td>
 
                       <td className="p-3 flex items-center gap-2">
-                        <Image
-                          src={"/images/driver.png"}
-                          width={20}
-                          height={20}
-                          alt={`${username} avatar`}
-                          loading="lazy"
-                        />
-                        <span className="truncate">{username}</span>
+                        {FuelPerMile}
                       </td>
 
-                      <td className="p-3">{email}</td>
-
-                      <td className="p-3">{Phone ?? "--"}</td>
+                      <td className="p-3">{TotalMileage}</td>
 
                       <td className="p-3">
-                        <Badge variant={confirmed ? "default" : "destructive"}>
-                          {confirmed ? "Confirmed" : "Unconfirmed"}
+                        <Badge variant={Available ? "default" : "destructive"}>
+                          {Available ? "Available" : "Unavailable"}
                         </Badge>
                       </td>
 
                       <td className="p-3">
-                        <Badge variant={blocked ? "destructive" : "default"}>
-                          {blocked ? "Blocked" : "Unblocked"}
-                        </Badge>
-                      </td>
-
-                      <td className="p-3">
-                        <ActionUser
-                          user={{
+                        <ActionTruck
+                          truck={{
                             id,
                             documentId,
-                            username,
-                            Phone,
-                            email,
-                            confirmed,
-                            blocked,
+                            FuelPerMile,
+                            TotalMileage,
+                            Available,
                           }}
                         />
                       </td>

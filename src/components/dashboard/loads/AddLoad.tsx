@@ -15,15 +15,32 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, CirclePlus } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
-import FieldInputForm from "../shared/FieldInputForm";
-import FieldSelectForm from "../shared/FieldSelectForm";
+import FieldInputForm from "../../shared/FieldInputForm";
+import FieldSelectForm from "../../shared/FieldSelectForm";
 import { useCreateLoadMutation } from "@/redux/apis/loadApi";
 import { toast } from "sonner";
 import { useState } from "react";
+import FieldSelectRelationForm from "@/components/shared/FieldSelectRelationForm";
+import { useAllDriversQuery } from "@/redux/apis/driverApi";
+import { useAllTrucksQuery } from "@/redux/apis/truckApi";
 
 export function AddLoad() {
   const [createLoad, { isLoading }] = useCreateLoadMutation();
   const [open, setOpen] = useState(false);
+  const { data: driversData } = useAllDriversQuery();
+  const { data: trucksData } = useAllTrucksQuery();
+
+  const driverOptions =
+    driversData?.data?.map((driver) => ({
+      label: driver.DriverDetails,
+      value: driver.id,
+    })) || [];
+
+  const truckOptions =
+    trucksData?.data?.map((truck) => ({
+      label: `Truck ${truck.TotalMileage}`,
+      value: truck.id,
+    })) || [];
 
   const {
     register,
@@ -39,13 +56,31 @@ export function AddLoad() {
       Distance: "",
       PricePerMile: "",
       Total: "",
+      driver: 0,
+      truck: 0,
       Available: true,
     },
   });
 
   const onSubmit = async (data: AddLoadFormSchema) => {
     try {
-      await createLoad(data).unwrap();
+      const payload = {
+        data: {
+          Route: data.Route,
+          Distance: Number(data.Distance),
+          PricePerMile: Number(data.PricePerMile),
+          Total: Number(data.Total),
+          Available: data.Available,
+          driver: {
+            connect: [data.driver],
+          },
+          truck: {
+            connect: [data.truck],
+          },
+        },
+      };
+
+      await createLoad(payload).unwrap();
       reset();
       toast.success("Load Added Successfully");
       setOpen(false);
@@ -110,6 +145,38 @@ export function AddLoad() {
             register={register}
             errors={errors}
           />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <Controller
+              name="driver"
+              control={control}
+              key="driver-controller"
+              render={({ field }) => (
+                <FieldSelectRelationForm
+                  label="Driver"
+                  id="driver"
+                  field={field}
+                  errors={errors}
+                  options={driverOptions}
+                />
+              )}
+            />
+
+            <Controller
+              name="truck"
+              control={control}
+              key="truck-controller"
+              render={({ field }) => (
+                <FieldSelectRelationForm
+                  label="Truck"
+                  id="truck"
+                  field={field}
+                  errors={errors}
+                  options={truckOptions}
+                />
+              )}
+            />
+          </div>
 
           <Controller
             name="Available"

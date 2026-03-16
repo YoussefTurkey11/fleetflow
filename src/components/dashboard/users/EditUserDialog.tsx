@@ -10,8 +10,8 @@ import {
 } from "@/components/ui/dialog";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import FieldInputForm from "../shared/FieldInputForm";
-import FieldSelectForm from "../shared/FieldSelectForm";
+import FieldInputForm from "../../shared/FieldInputForm";
+import FieldSelectForm from "../../shared/FieldSelectForm";
 import { toast } from "sonner";
 import { useEffect } from "react";
 import { User } from "@/types/authType";

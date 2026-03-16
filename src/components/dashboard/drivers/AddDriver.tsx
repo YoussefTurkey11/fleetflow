@@ -11,8 +11,8 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, CirclePlus } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
-import FieldInputForm from "../shared/FieldInputForm";
-import FieldSelectForm from "../shared/FieldSelectForm";
+import FieldInputForm from "../../shared/FieldInputForm";
+import FieldSelectForm from "../../shared/FieldSelectForm";
 import { toast } from "sonner";
 import { useState } from "react";
 import {
@@ -20,7 +20,7 @@ import {
   addDriverScheme,
 } from "@/validation/driver/addDriver.schema";
 import { useCreateDriverMutation } from "@/redux/apis/driverApi";
-import { DatePickerInput } from "../shared/DatePickerInput";
+import { DatePickerInput } from "../../shared/DatePickerInput";
 
 export function AddDriver() {
   const [createDriver, { isLoading }] = useCreateDriverMutation();

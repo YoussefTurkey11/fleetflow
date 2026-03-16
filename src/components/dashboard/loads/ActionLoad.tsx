@@ -4,25 +4,25 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+} from "../../ui/dropdown-menu";
 import { Pencil, Trash2 } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
+import { useDeleteLoadMutation } from "@/redux/apis/loadApi";
 import { toast } from "sonner";
 import { useState } from "react";
-import { Truck } from "@/types/truckType";
-import { useDeleteTruckMutation } from "@/redux/apis/truckApi";
-import { EditTruckDialog } from "./EditTruckDialog";
+import { EditLoadDialog } from "./EditLoadDialog";
+import { Load } from "@/types/loadType";
 
-const ActionTruck = ({ truck }: { truck: Truck }) => {
+const ActionLoad = ({ load }: { load: Load }) => {
   const [open, setOpen] = useState(false);
-  const [deleteTruck, { isLoading }] = useDeleteTruckMutation();
+  const [deleteLoad, { isLoading }] = useDeleteLoadMutation();
 
   const handleDelete = async () => {
     try {
-      await deleteTruck(truck?.documentId as string).unwrap();
-      toast.success("Truck deleted successfully");
+      await deleteLoad(load.documentId).unwrap();
+      toast.success("Load deleted successfully");
     } catch {
-      toast.error("Failed to delete truck");
+      toast.error("Failed to delete load");
     }
   };
 
@@ -57,9 +57,9 @@ const ActionTruck = ({ truck }: { truck: Truck }) => {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <EditTruckDialog open={open} setOpen={setOpen} truck={truck} />
+      <EditLoadDialog open={open} setOpen={setOpen} load={load} />
     </>
   );
 };
 
-export default ActionTruck;
+export default ActionLoad;

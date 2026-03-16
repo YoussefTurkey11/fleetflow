@@ -5,6 +5,8 @@ export const addLoadScheme = z.object({
   Distance: z.string().min(1, "This field is required"),
   PricePerMile: z.string().min(1, "This field is required"),
   Total: z.string().min(1, "This field is required"),
+  driver: z.number().min(1),
+  truck: z.number().min(1),
   Available: z.boolean(),
 });
 

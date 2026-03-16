@@ -25,7 +25,7 @@ export const loadApi = api.injectEndpoints({
       query: (body) => ({
         url: `/api/loads`,
         method: "POST",
-        body: { data: body },
+        body,
       }),
       invalidatesTags: [{ type: "Loads", id: "LIST" }],
     }),
@@ -33,12 +33,12 @@ export const loadApi = api.injectEndpoints({
     // Update Load
     updateLoad: builder.mutation<
       ApiResponseLoad,
-      { documentId: string; body: Partial<Load> }
+      { documentId: string; body: CreateLoad }
     >({
       query: ({ documentId, body }) => ({
         url: `/api/loads/${documentId}`,
         method: "PUT",
-        body: { data: body },
+        body,
       }),
       invalidatesTags: [{ type: "Loads", id: "LIST" }],
     }),

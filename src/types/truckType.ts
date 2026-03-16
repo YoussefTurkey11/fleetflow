@@ -10,7 +10,7 @@ export type ApiResponseTruck = {
 };
 
 export type Truck = {
-  id?: number;
+  id: number;
   documentId?: string;
   FuelPerMile: string;
   TotalMileage: string;

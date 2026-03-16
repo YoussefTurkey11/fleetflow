@@ -1,6 +1,6 @@
 "use client";
 
-import { TableLoads } from "@/components/loads/TableLoads";
+import { TableLoads } from "@/components/dashboard/loads/TableLoads";
 import StatsCards from "@/components/shared/StatsCards";
 import Title from "@/components/shared/Title";
 import { useAllLoadsQuery } from "@/redux/apis/loadApi";

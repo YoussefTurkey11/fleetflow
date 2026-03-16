@@ -9,7 +9,7 @@ import { useTableSort } from "@/hooks/useTableSort";
 import { useTableSearch } from "@/hooks/useTableSearch";
 import { useTableFilter } from "@/hooks/useTableFilter";
 import { useTablePagination } from "@/hooks/useTablePagination";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "../../ui/skeleton";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ApiResponseDrivers, Driver } from "@/types/driverType";

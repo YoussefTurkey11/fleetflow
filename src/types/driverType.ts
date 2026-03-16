@@ -10,7 +10,7 @@ export type ApiResponseDriver = {
 };
 
 export type Driver = {
-  id?: number;
+  id: number;
   documentId?: string;
   DriverDetails: string;
   PhoneNumber: string;

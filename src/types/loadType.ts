@@ -1,4 +1,6 @@
+import { Driver } from "./driverType";
 import { ApiResponsePagination } from "./paginationType";
+import { Truck } from "./truckType";
 
 export type ApiResponseLoads = {
   data: Load[];
@@ -17,6 +19,8 @@ export type Load = {
   PricePerMile: string;
   Total: string;
   Available: boolean;
+  driver?: Driver;
+  truck?: Truck;
   createdAt?: string;
   updatedAt?: string;
   publishedAt?: string;
@@ -27,9 +31,17 @@ export type TableLoadsProps = {
 };
 
 export type CreateLoad = {
-  Route: string;
-  Distance: string;
-  PricePerMile: string;
-  Total: string;
-  Available: boolean;
+  data: {
+    Route: string;
+    Distance: number;
+    PricePerMile: number;
+    Total: number;
+    Available: boolean;
+    driver?: {
+      connect: number[];
+    };
+    truck?: {
+      connect: number[];
+    };
+  };
 };
