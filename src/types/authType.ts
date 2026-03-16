@@ -1,6 +1,6 @@
 export type ApiResponse = {
   jwt: string;
-  user: User[];
+  user: User;
 };
 
 export type EmailResponse = {

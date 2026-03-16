@@ -19,7 +19,7 @@ export const useLoginService = () => {
       const token = res.jwt;
       toast.success("Login Successfully");
       setAuthCookie(token);
-      dispatch(setUser(res.user));
+      dispatch(setUser(res?.user));
       return res;
     } catch (error: any) {
       toast.error(error?.data?.error?.message ?? "Login failed");
