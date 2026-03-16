@@ -1,6 +1,7 @@
 import {
   ApiResponseDriver,
   ApiResponseDrivers,
+  CreateDriver,
   Driver,
 } from "@/types/driverType";
 import { api } from "../baseApi";
@@ -20,7 +21,7 @@ export const driverApi = api.injectEndpoints({
     }),
 
     // Create Driver
-    createDriver: builder.mutation<ApiResponseDriver, Driver>({
+    createDriver: builder.mutation<ApiResponseDriver, CreateDriver>({
       query: (body) => ({
         url: `/api/drivers`,
         method: "POST",

@@ -1,4 +1,9 @@
-import { ApiResponseTruck, ApiResponseTrucks, Truck } from "@/types/truckType";
+import {
+  ApiResponseTruck,
+  ApiResponseTrucks,
+  CreateTruck,
+  Truck,
+} from "@/types/truckType";
 import { api } from "../baseApi";
 
 export const truckApi = api.injectEndpoints({
@@ -16,7 +21,7 @@ export const truckApi = api.injectEndpoints({
     }),
 
     // Create Truck
-    createTruck: builder.mutation<ApiResponseTruck, Truck>({
+    createTruck: builder.mutation<ApiResponseTruck, CreateTruck>({
       query: (body) => ({
         url: `/api/trucks`,
         method: "POST",
