@@ -219,15 +219,17 @@ export function TableUsers({
                     >
                       <td className="p-3">{id}</td>
 
-                      <td className="p-3 flex items-center gap-2">
-                        <Image
-                          src={"/images/driver.png"}
-                          width={20}
-                          height={20}
-                          alt={`${username} avatar`}
-                          loading="lazy"
-                        />
-                        <span className="truncate">{username}</span>
+                      <td className="p-3">
+                        <div className="flex items-center gap-2">
+                          <Image
+                            src={"/images/driver.png"}
+                            width={20}
+                            height={20}
+                            alt={`${username} avatar`}
+                            loading="lazy"
+                          />
+                          <span className="truncate">{username}</span>
+                        </div>
                       </td>
 
                       <td className="p-3">{email}</td>

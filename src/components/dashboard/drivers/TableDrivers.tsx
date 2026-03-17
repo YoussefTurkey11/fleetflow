@@ -227,15 +227,17 @@ export function TableDrivers({
                     >
                       <td className="p-3">{id}</td>
 
-                      <td className="p-3 flex items-center gap-2">
-                        <Image
-                          src={"/images/driver.png"}
-                          width={20}
-                          height={20}
-                          alt={DriverDetails}
-                          loading="lazy"
-                        />
-                        <span className="truncate">{DriverDetails}</span>
+                      <td className="p-3">
+                        <div className="flex items-center gap-2">
+                          <Image
+                            src={"/images/driver.png"}
+                            width={20}
+                            height={20}
+                            alt={DriverDetails}
+                            loading="lazy"
+                          />
+                          <span className="truncate">{DriverDetails}</span>
+                        </div>
                       </td>
 
                       <td className="p-3">{PhoneNumber}</td>

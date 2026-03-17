@@ -243,19 +243,25 @@ export function TableLoads({
                     >
                       <td className="p-3">{id}</td>
 
-                      <td className="p-3 truncate flex flex-col gap-1">
-                        <p className="flex items-center gap-1">
+                      <td className="p-3 truncate flex flex-col gap-2">
+                        <Badge className="flex items-center gap-1">
                           <LocateFixed size={10} />
-                          <span className="truncate">{Origin}</span>
-                        </p>
-                        <p className="flex items-center gap-1">
+                          <span className="truncate max:w-40">{Origin}</span>
+                        </Badge>
+                        <Badge
+                          variant={"process"}
+                          className="flex items-center gap-1"
+                        >
                           <Route size={10} />
-                          <span className="truncate">{Pickup}</span>
-                        </p>
-                        <p className="flex items-center gap-1">
+                          <span className="truncate max:w-40">{Pickup}</span>
+                        </Badge>
+                        <Badge
+                          variant={"success"}
+                          className="flex items-center gap-1"
+                        >
                           <MapPinCheckInside size={10} />
-                          <span className="truncate">{Delivery}</span>
-                        </p>
+                          <span className="truncate max:w-40">{Delivery}</span>
+                        </Badge>
                       </td>
 
                       <td className="p-3">{Distance}</td>
@@ -264,19 +270,21 @@ export function TableLoads({
 
                       <td className="p-3 font-semibold">${Total}</td>
 
-                      <td className="p-3 flex items-center gap-2">
-                        {driver?.DriverDetails && (
-                          <Image
-                            src={"/images/driver.png"}
-                            width={20}
-                            height={20}
-                            alt={driver?.DriverDetails ?? "driver"}
-                            loading="lazy"
-                          />
-                        )}
-                        <span className="truncate">
-                          {driver?.DriverDetails ?? "--"}
-                        </span>
+                      <td className="p-3">
+                        <div className="flex items-center gap-2">
+                          {driver?.DriverDetails && (
+                            <Image
+                              src={"/images/driver.png"}
+                              width={20}
+                              height={20}
+                              alt={driver?.DriverDetails ?? "driver"}
+                              loading="lazy"
+                            />
+                          )}
+                          <span className="truncate">
+                            {driver?.DriverDetails ?? "--"}
+                          </span>
+                        </div>
                       </td>
 
                       <td className="p-3 font-semibold">
