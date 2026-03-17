@@ -1,7 +1,9 @@
 import { z } from "zod";
 
 export const addLoadScheme = z.object({
-  Route: z.string().min(1, "This field is required"),
+  Origin: z.string().min(1, "This field is required"),
+  Pickup: z.string().min(1, "This field is required"),
+  Delivery: z.string().min(1, "This field is required"),
   Distance: z.string().min(1, "This field is required"),
   PricePerMile: z.string().min(1, "This field is required"),
   Total: z.string().min(1, "This field is required"),

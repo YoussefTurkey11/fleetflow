@@ -55,7 +55,9 @@ export function EditLoadDialog({ open, setOpen, load }: Props) {
   } = useForm<AddLoadFormSchema>({
     resolver: zodResolver(addLoadScheme),
     defaultValues: {
-      Route: "",
+      Origin: "",
+      Pickup: "",
+      Delivery: "",
       Distance: "",
       PricePerMile: "",
       Total: "",
@@ -68,7 +70,9 @@ export function EditLoadDialog({ open, setOpen, load }: Props) {
   useEffect(() => {
     if (load) {
       reset({
-        Route: load.Route,
+        Origin: load.Origin,
+        Pickup: load.Pickup,
+        Delivery: load.Delivery,
         Distance: String(load.Distance),
         PricePerMile: String(load.PricePerMile),
         Total: String(load.Total),
@@ -83,7 +87,9 @@ export function EditLoadDialog({ open, setOpen, load }: Props) {
     try {
       const payload = {
         data: {
-          Route: data.Route,
+          Origin: data.Origin,
+          Pickup: data.Pickup,
+          Delivery: data.Delivery,
           Distance: Number(data.Distance),
           PricePerMile: Number(data.PricePerMile),
           Total: Number(data.Total),
@@ -118,25 +124,25 @@ export function EditLoadDialog({ open, setOpen, load }: Props) {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <FieldInputForm
-            label="Route"
-            id="Route"
-            type="text"
+            label="Origin"
+            id="Origin"
+            type="search"
             register={register}
             errors={errors}
           />
 
           <FieldInputForm
-            label="Distance"
-            id="Distance"
-            type="text"
+            label="Pickup"
+            id="Pickup"
+            type="search"
             register={register}
             errors={errors}
           />
 
           <FieldInputForm
-            label="Price Per Mile"
-            id="PricePerMile"
-            type="text"
+            label="Delivery"
+            id="Delivery"
+            type="search"
             register={register}
             errors={errors}
           />

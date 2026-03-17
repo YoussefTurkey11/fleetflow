@@ -17,7 +17,7 @@ import Link from "next/link";
 type TFieldInputForm<T extends FieldValues> = {
   label: string;
   id: Path<T>;
-  type: "email" | "text" | "password" | "number" | "phone";
+  type: "email" | "text" | "password" | "number" | "phone" | "search";
   placeholder?: string;
   errors: FieldErrors<T>;
   register: UseFormRegister<T>;

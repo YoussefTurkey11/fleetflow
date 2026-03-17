@@ -14,7 +14,9 @@ export type ApiResponseLoad = {
 export type Load = {
   id: number;
   documentId: string;
-  Route: string;
+  Origin: string;
+  Pickup: string;
+  Delivery: string;
   Distance: string;
   PricePerMile: string;
   Total: string;
@@ -32,7 +34,9 @@ export type TableLoadsProps = {
 
 export type CreateLoad = {
   data: {
-    Route: string;
+    Origin: string;
+    Pickup: string;
+    Delivery: string;
     Distance: number;
     PricePerMile: number;
     Total: number;

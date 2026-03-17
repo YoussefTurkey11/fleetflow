@@ -1,12 +1,12 @@
 # FleetFlow
 
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
-
 FleetFlow is a modern fleet management system that helps logistics companies efficiently manage trucks, drivers, and loads through a centralized and intuitive dashboard.
 
 The platform provides real-time insights into fleet availability, load distribution, and operational status, enabling administrators to streamline transportation operations and improve overall fleet productivity.
 
 FleetFlow is built with a modern full-stack architecture using Next.js for the frontend and Strapi as a headless CMS backend.
+
+- [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 
 ### Features
 

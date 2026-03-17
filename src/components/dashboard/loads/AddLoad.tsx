@@ -52,7 +52,9 @@ export function AddLoad() {
     resolver: zodResolver(addLoadScheme),
     mode: "onSubmit",
     defaultValues: {
-      Route: "",
+      Origin: "",
+      Pickup: "",
+      Delivery: "",
       Distance: "",
       PricePerMile: "",
       Total: "",
@@ -66,7 +68,9 @@ export function AddLoad() {
     try {
       const payload = {
         data: {
-          Route: data.Route,
+          Origin: data.Origin,
+          Pickup: data.Pickup,
+          Delivery: data.Delivery,
           Distance: Number(data.Distance),
           PricePerMile: Number(data.PricePerMile),
           Total: Number(data.Total),
@@ -111,9 +115,27 @@ export function AddLoad() {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <FieldInputForm
-            label="Route"
-            id="Route"
-            type="text"
+            label="Origin"
+            id="Origin"
+            type="search"
+            placeholder="e.g. Cairo → Alexandria"
+            register={register}
+            errors={errors}
+          />
+
+          <FieldInputForm
+            label="Pickup"
+            id="Pickup"
+            type="search"
+            placeholder="e.g. Cairo → Alexandria"
+            register={register}
+            errors={errors}
+          />
+
+          <FieldInputForm
+            label="Delivery"
+            id="Delivery"
+            type="search"
             placeholder="e.g. Cairo → Alexandria"
             register={register}
             errors={errors}

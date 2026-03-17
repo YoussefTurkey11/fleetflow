@@ -1,6 +1,15 @@
 "use client";
 
-import { ArrowDown, ArrowUp, ArrowUpDown, Search } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
+  LocateFixed,
+  MapPin,
+  MapPinCheckInside,
+  Route,
+  Search,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,7 +34,7 @@ const TABS = [
 
 const TABLE_HEAD = [
   "Load Id",
-  "Routes",
+  "Route",
   "Distance",
   "Price/Mile",
   "Total",
@@ -35,7 +44,7 @@ const TABLE_HEAD = [
   "Action",
 ];
 
-type SortKey = "id" | "Route" | "Available";
+type SortKey = "id" | "Origin" | "Pickup" | "Delivery" | "Available";
 
 export function TableLoads({
   loads,
@@ -51,7 +60,9 @@ export function TableLoads({
   /* ---------------- search ---------------- */
 
   const { search, setSearch, filteredRowsSearch } = useTableSearch(rows, [
-    "Route",
+    "Origin",
+    "Pickup",
+    "Delivery",
     "id",
   ]);
 
@@ -149,7 +160,9 @@ export function TableLoads({
               {TABLE_HEAD.map((head, index) => {
                 const sortKeys: (SortKey | null)[] = [
                   "id",
-                  "Route",
+                  "Origin",
+                  "Pickup",
+                  "Delivery",
                   "Available",
                   null,
                 ];
@@ -212,7 +225,9 @@ export function TableLoads({
                     {
                       id,
                       documentId,
-                      Route,
+                      Origin,
+                      Pickup,
+                      Delivery,
                       Distance,
                       PricePerMile,
                       Total,
@@ -228,7 +243,20 @@ export function TableLoads({
                     >
                       <td className="p-3">{id}</td>
 
-                      <td className="p-3 truncate">{Route}</td>
+                      <td className="p-3 truncate flex flex-col gap-1">
+                        <p className="flex items-center gap-1">
+                          <LocateFixed size={10} />
+                          <span className="truncate">{Origin}</span>
+                        </p>
+                        <p className="flex items-center gap-1">
+                          <Route size={10} />
+                          <span className="truncate">{Pickup}</span>
+                        </p>
+                        <p className="flex items-center gap-1">
+                          <MapPinCheckInside size={10} />
+                          <span className="truncate">{Delivery}</span>
+                        </p>
+                      </td>
 
                       <td className="p-3">{Distance}</td>
 
@@ -266,7 +294,9 @@ export function TableLoads({
                           load={{
                             id,
                             documentId,
-                            Route,
+                            Origin,
+                            Pickup,
+                            Delivery,
                             Distance,
                             PricePerMile,
                             Total,
