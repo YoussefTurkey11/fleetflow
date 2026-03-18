@@ -5,15 +5,9 @@ import Search from "@/components/shared/Search";
 import { ThemeToggle } from "@/components/shared/ThemeToggle";
 import UserAvatar from "@/components/shared/UserAvatar";
 import { Button } from "@/components/ui/button";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from "@/components/ui/input-group";
 import { toggleSidebar, toggleSidebarMobile } from "@/redux/slices/uiSlice";
 import { useAppDispatch } from "@/redux/store";
-import { Bell, Menu, SearchIcon } from "lucide-react";
-import Image from "next/image";
+import { Menu } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const Header = () => {
@@ -45,7 +39,7 @@ const Header = () => {
         </Button>
 
         {/* Search */}
-        <Search />
+        {/* <Search /> */}
       </div>
 
       {/* Right */}
