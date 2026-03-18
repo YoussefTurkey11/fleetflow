@@ -23,10 +23,7 @@ const ItemSidebar = ({ collapsed }: { collapsed: boolean }) => {
   };
 
   return (
-    <ul
-      className="flex flex-col gap-5 my-5 w-full"
-      onClick={() => dispatch(closeSidebarMobile())}
-    >
+    <ul className="flex flex-col gap-5 my-5 w-full">
       {menuItem.map((item) => (
         <li key={item.id}>
           {item.nested ? (
@@ -35,7 +32,9 @@ const ItemSidebar = ({ collapsed }: { collapsed: boolean }) => {
                 className={`flex items-center ${
                   collapsed ? "justify-center" : "justify-between px-5"
                 } py-3 cursor-pointer hover:bg-secondary hover:rounded-md transition-colors`}
-                onClick={() => toggleMenu(item.id)}
+                onClick={() => {
+                  toggleMenu(item.id);
+                }}
               >
                 <p
                   className={`flex items-center ${
@@ -68,6 +67,9 @@ const ItemSidebar = ({ collapsed }: { collapsed: boolean }) => {
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
                     className={`flex flex-col gap-3 my-3 mx-5 ${collapsed ? "" : "border-l border-secondary"} overflow-hidden`}
+                    onClick={() => {
+                      if (!collapsed) return dispatch(closeSidebarMobile());
+                    }}
                   >
                     {item.nested.map((sub) => (
                       <SubMenu key={sub.id} sub={sub} isActive={isActive} />

@@ -8,6 +8,7 @@ import { useAllLoadsQuery } from "@/redux/apis/loadApi";
 import { useAllTrucksQuery } from "@/redux/apis/truckApi";
 import { Box, TruckElectric, UserRound, Wallet } from "lucide-react";
 import LoadsMoneyChart from "@/components/dashboard/loads/LoadsMoneyChart";
+import { AllLoadsMap } from "@/components/dashboard/loads/AllLoadsMap";
 
 const Admin = () => {
   const {
@@ -89,15 +90,15 @@ const Admin = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         <div className="col-span-2 bg-background rounded-lg shadow p-5">
-          <TableLoads loads={allLoads} isFetching={loadLoading} />
+          <AllLoadsMap loads={loads || []} />
         </div>
         <div className="space-y-5">
-          <LoadsChart
+          {/* <LoadsChart
             loads={loads?.length ?? 0}
             available={availableLoads?.length ?? 0}
             unavailable={unAvailableLoads?.length ?? 0}
             loading={loadLoading}
-          />
+          /> */}
           <LoadsMoneyChart loads={chartData} loading={loadLoading} />
         </div>
       </div>
