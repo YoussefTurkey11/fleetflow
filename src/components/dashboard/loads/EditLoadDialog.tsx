@@ -14,14 +14,15 @@ import {
   addLoadScheme,
 } from "@/validation/load/addLoad.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import FieldInputForm from "../../shared/FieldInputForm";
 import FieldSelectForm from "../../shared/FieldSelectForm";
 import { toast } from "sonner";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import FieldSelectRelationForm from "@/components/shared/FieldSelectRelationForm";
 import { useAllDriversQuery } from "@/redux/apis/driverApi";
 import { useAllTrucksQuery } from "@/redux/apis/truckApi";
+import { MapLoad } from "./MapLoad";
 
 type Props = {
   open: boolean;
@@ -33,6 +34,9 @@ export function EditLoadDialog({ open, setOpen, load }: Props) {
   const [updateLoad, { isLoading }] = useUpdateLoadMutation();
   const { data: driversData } = useAllDriversQuery();
   const { data: trucksData } = useAllTrucksQuery();
+  const [focusedField, setFocusedField] = useState<
+    "Origin" | "Pickup" | "Delivery" | null
+  >(null);
 
   const driverOptions =
     driversData?.data?.map((driver) => ({
@@ -52,6 +56,7 @@ export function EditLoadDialog({ open, setOpen, load }: Props) {
     formState: { errors },
     reset,
     control,
+    setValue,
   } = useForm<AddLoadFormSchema>({
     resolver: zodResolver(addLoadScheme),
     defaultValues: {
@@ -66,6 +71,10 @@ export function EditLoadDialog({ open, setOpen, load }: Props) {
       truck: undefined,
     },
   });
+
+  const watchedOrigin = useWatch({ control, name: "Origin" });
+  const watchedPickup = useWatch({ control, name: "Pickup" });
+  const watchedDelivery = useWatch({ control, name: "Delivery" });
 
   useEffect(() => {
     if (load) {
@@ -115,45 +124,89 @@ export function EditLoadDialog({ open, setOpen, load }: Props) {
     }
   };
 
+  const handleDistanceCalculated = (distanceInKm: number) => {
+    setValue("Distance", distanceInKm.toString(), {
+      shouldValidate: true,
+    });
+  };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-3xl">
         <DialogHeader>
           <DialogTitle>Edit Load</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-          <FieldInputForm
-            label="Origin"
-            id="Origin"
-            type="search"
-            register={register}
-            errors={errors}
-          />
+          <div className="flex flex-col md:flex-row gap-5 mb-10">
+            <div className="md:w-[50%] space-y-5">
+              <FieldInputForm
+                label="Origin"
+                id="Origin"
+                type="search"
+                placeholder="e.g. Cairo → Alexandria"
+                register={register}
+                errors={errors}
+              />
 
-          <FieldInputForm
-            label="Pickup"
-            id="Pickup"
-            type="search"
-            register={register}
-            errors={errors}
-          />
+              <FieldInputForm
+                label="Pickup"
+                id="Pickup"
+                type="search"
+                placeholder="e.g. Cairo → Alexandria"
+                register={register}
+                errors={errors}
+              />
 
-          <FieldInputForm
-            label="Delivery"
-            id="Delivery"
-            type="search"
-            register={register}
-            errors={errors}
-          />
+              <FieldInputForm
+                label="Delivery"
+                id="Delivery"
+                type="search"
+                placeholder="e.g. Cairo → Alexandria"
+                register={register}
+                errors={errors}
+              />
+            </div>
+            <div className="md:w-[50%]">
+              <MapLoad
+                origin={watchedOrigin}
+                pickup={watchedPickup}
+                delivery={watchedDelivery}
+                focusedField={focusedField}
+                onDistanceCalculated={handleDistanceCalculated}
+              />
+            </div>
+          </div>
 
-          <FieldInputForm
-            label="Total"
-            id="Total"
-            type="text"
-            register={register}
-            errors={errors}
-          />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <FieldInputForm
+              label="Distance"
+              id="Distance"
+              type="number"
+              placeholder="e.g. 220"
+              register={register}
+              errors={errors}
+              disabled={true}
+            />
+
+            <FieldInputForm
+              label="Price Per Mile"
+              id="PricePerMile"
+              type="number"
+              placeholder="e.g. 2.15"
+              register={register}
+              errors={errors}
+            />
+
+            <FieldInputForm
+              label="Total"
+              id="Total"
+              type="number"
+              placeholder="Will be calculated or entered"
+              register={register}
+              errors={errors}
+            />
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <Controller

@@ -21,6 +21,8 @@ type TFieldInputForm<T extends FieldValues> = {
   placeholder?: string;
   errors: FieldErrors<T>;
   register: UseFormRegister<T>;
+  disabled?: boolean;
+  onFocus?: () => void;
 };
 
 const FieldInputForm = <T extends FieldValues>({
@@ -30,6 +32,8 @@ const FieldInputForm = <T extends FieldValues>({
   placeholder,
   errors,
   register,
+  disabled,
+  onFocus,
 }: TFieldInputForm<T>) => {
   const pathname = usePathname();
   const [showPassword, setShowPassword] = useState(false);
@@ -61,6 +65,8 @@ const FieldInputForm = <T extends FieldValues>({
           placeholder={placeholder}
           {...register(id)}
           className={errors[id] ? "border-destructive/90 text-destructive" : ""}
+          disabled={disabled ? disabled : false}
+          onFocus={onFocus}
         />
         {isPassword && (
           <button
