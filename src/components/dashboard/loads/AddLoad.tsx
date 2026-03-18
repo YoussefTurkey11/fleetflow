@@ -124,7 +124,7 @@ export function AddLoad() {
         }
       />
 
-      <DialogContent className="sm:max-w-3xl">
+      <DialogContent className="md:max-w-2xl lg:max-w-3xl h-150 sm:h-fit overflow-y-scroll">
         <DialogHeader className="border-b border-ring/30 pb-4">
           <DialogTitle className="flex items-center gap-1.5">
             <CirclePlus size={16} />

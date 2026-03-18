@@ -6,10 +6,13 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SubMenu from "./SubMenu";
+import { useAppDispatch } from "@/redux/store";
+import { closeSidebarMobile } from "@/redux/slices/uiSlice";
 
 const ItemSidebar = ({ collapsed }: { collapsed: boolean }) => {
   const pathname = usePathname();
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
 
   const toggleMenu = (id: string) => {
     setOpenMenu((prev) => (prev === id ? null : id));
@@ -20,7 +23,10 @@ const ItemSidebar = ({ collapsed }: { collapsed: boolean }) => {
   };
 
   return (
-    <ul className="flex flex-col gap-5 my-5 w-full">
+    <ul
+      className="flex flex-col gap-5 my-5 w-full"
+      onClick={() => dispatch(closeSidebarMobile())}
+    >
       {menuItem.map((item) => (
         <li key={item.id}>
           {item.nested ? (

@@ -132,7 +132,7 @@ export function EditLoadDialog({ open, setOpen, load }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-3xl">
+      <DialogContent className="md:max-w-2xl lg:max-w-3xl h-150 sm:h-fit overflow-y-scroll">
         <DialogHeader>
           <DialogTitle>Edit Load</DialogTitle>
         </DialogHeader>

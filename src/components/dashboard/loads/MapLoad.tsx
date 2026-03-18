@@ -57,9 +57,6 @@ export function MapLoad({
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [mapCenterPoint, setMapCenterPoint] = useState<[number, number]>([
-    4.69, 52.14,
-  ]);
 
   // ✅ تصحيح 1: تمرير قيمة ابتدائية (null)
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
@@ -77,25 +74,6 @@ export function MapLoad({
       onDistanceCalculated?.(0);
     }
   }, [routes, selectedIndex, onDistanceCalculated]);
-
-  useEffect(() => {
-    if (points.length > 0) {
-      const avgLng = points.reduce((sum, p) => sum + p.lng, 0) / points.length;
-      const avgLat = points.reduce((sum, p) => sum + p.lat, 0) / points.length;
-      setMapCenterPoint([avgLng, avgLat]);
-    } else {
-      setMapCenterPoint([4.69, 52.14]);
-    }
-  }, [points]);
-
-  // التركيز على الحقل المحدد (عند تغير focusedField)
-  useEffect(() => {
-    if (!focusedField || points.length === 0) return;
-    const targetPoint = points.find((p) => p.label === focusedField);
-    if (targetPoint) {
-      setMapCenterPoint([targetPoint.lng, targetPoint.lat]);
-    }
-  }, [focusedField, points]);
 
   // تحويل العنوان إلى إحداثيات باستخدام Nominatim
   const geocodeAddress = async (
@@ -226,8 +204,8 @@ export function MapLoad({
   }, [focusedField, points]);
 
   return (
-    <div className="h-full w-full relative">
-      <Map center={mapCenterPoint} zoom={8.5}>
+    <div className="h-60 sm:h-full w-full relative">
+      <Map center={mapCenter as [number, number]} zoom={8.5}>
         {/* رسم المسارات */}
         {sortedRoutes.map(({ route, index }) => {
           const isSelected = index === selectedIndex;
