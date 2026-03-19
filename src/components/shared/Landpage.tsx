@@ -72,7 +72,7 @@ const Landpage = () => {
             size="lg"
             className="cursor-pointer text-base"
             render={
-              <Link href={user ? "/admin" : "/login"}>Explore Dashboard</Link>
+              <Link href={user ? "/admin" : "/login"}>View Live Demo</Link>
             }
           />
 
