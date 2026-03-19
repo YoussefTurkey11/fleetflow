@@ -3,7 +3,7 @@ import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
 
-const Logo = ({ collapsed }: { collapsed: boolean }) => {
+const Logo = ({ collapsed }: { collapsed?: boolean }) => {
   const { theme } = useTheme();
 
   return (

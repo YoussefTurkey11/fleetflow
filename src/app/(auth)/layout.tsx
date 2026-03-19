@@ -1,9 +1,10 @@
+import Footer from "@/components/layouts/footer/Footer";
 import { ThemeToggle } from "@/components/shared/ThemeToggle";
 import Image from "next/image";
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <main className="flex items-center justify-center min-h-screen">
+    <main className="relative flex items-center justify-center min-h-screen">
       <div className="fixed top-5 right-5">
         <ThemeToggle />
       </div>
@@ -23,6 +24,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
         </div>
         <div className="my-5 md:min-w-sm">{children}</div>
       </section>
+      <Footer />
     </main>
   );
 };
